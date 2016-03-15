@@ -40,4 +40,21 @@ TACAL.TODAY = null;
  */
 $(function(){
     TACAL.TODAY = new Date();
+
+    // Check if current month is February and if its a leap year
+    if((TACAL.TODAY.getMonth() == 1) && TACAL.LeapYear()){
+
+        // Change February calendar days from 28 to 29
+        TACAL.CALDAYS[1] = 29;
+    }
 });
+
+/**
+ * Determines if the current year is a leap year.
+ * @returns {boolean}
+ */
+TACAL.LeapYear = function(){
+    var year = TACAL.TODAY.getFullYear();
+    return ((year % 4 == 0) && (year % 100 != 0)) || (year % 400 == 0);
+
+};

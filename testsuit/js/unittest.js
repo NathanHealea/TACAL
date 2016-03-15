@@ -21,6 +21,7 @@ $(function () {
     UnitTest.testMonths();
     UnitTest.testCaldays();
     UnitTest.testToday();
+    UnitTest.testLeapYear();
 
 });
 
@@ -35,7 +36,9 @@ UnitTest.FAIL = "FAIL";
  */
 UnitTest.DisplayPass = function (test) {
     $('#unittest').append(
-        $('<div id="' + test + '""></div>').html(test + ": " + '<span style="color:green;">' + UnitTest.PASS + '</span>')
+        $('<div id="' + test + '""></div>').html(
+            test + ": "
+            + '<span style="color:green;">' + UnitTest.PASS + '</span>')
     );
 };
 
@@ -211,10 +214,48 @@ UnitTest.testToday = function () {
     actualDate = TACAL.TODAY.toDateString();
 
     // Assert
-    if(expectedDate != actualDate){
+    if (expectedDate != actualDate) {
         UnitTest.DisplayFail(test, expectedDate, actualDate);
         return;
     }
+
+    UnitTest.DisplayPass(test);
+
+};
+
+/** Testing if february is a leap year */
+UnitTest.testLeapYear = function () {
+    var test = "testLeapYear";
+
+    // Arrange
+    var expectedCurrentYear = true; // tested for 2016
+    var actualCurrentYear;
+    var expected2013 = false; // tested for 2013
+    var actual2013;
+    var expected2013Calday = 29;
+    var acutual2013Calday;
+
+
+    // Act
+    actualCurrentYear = TACAL.LeapYear();
+    TACAL.TODAY.setFullYear(2013);
+    TACAL.TODAY.setMonth(1);
+    actual2013 = TACAL.LeapYear();
+    acutual2013Calday = TACAL.CALDAYS[1];
+
+
+
+    // Assert
+    if(expectedCurrentYear != actualCurrentYear){
+        UnitTest.DisplayFail(test, expectedCurrentYear, actualCurrentYear);
+        return;
+    }
+
+    if(expected2013 != actual2013){
+        UnitTest.DisplayFail(test, expected2013, actual2013);
+        return;
+    }
+
 
     UnitTest.DisplayPass(test);
 
