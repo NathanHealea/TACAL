@@ -28,3 +28,16 @@ TACAL.MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 
  * @type {number[]}
  */
 TACAL.CALDAYS = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+/**
+ * Holds the current date
+ * @type {Date}
+ */
+TACAL.TODAY = null;
+
+/**
+ * Sets TACAL information.
+ */
+$(function(){
+    TACAL.TODAY = new Date();
+});

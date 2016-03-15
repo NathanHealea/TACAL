@@ -5,26 +5,47 @@
  * Created: 3/15/16
  */
 
+/* Declaring UnitTest object */
 var UnitTest;
+
+/* Initializing UnitTest object */
 UnitTest = UnitTest || {};
+
+/**
+ * Runs all test on page load
+ */
 $(function () {
 
     UnitTest.testInitialization();
     UnitTest.testDates();
     UnitTest.testMonths();
+    UnitTest.testCaldays();
+    UnitTest.testToday();
 
 });
 
+// Defining Pass and Faill for consistency
 UnitTest.PASS = "PASS";
-
 UnitTest.FAIL = "FAIL";
 
+/**
+ * Display passing test message
+ * @param test
+ * @constructor
+ */
 UnitTest.DisplayPass = function (test) {
     $('#unittest').append(
         $('<div id="' + test + '""></div>').html(test + ": " + '<span style="color:green;">' + UnitTest.PASS + '</span>')
     );
 };
 
+/**
+ * Displaying failing test message
+ * @param test
+ * @param expected
+ * @param actual
+ * @constructor
+ */
 UnitTest.DisplayFail = function (test, expected, actual) {
     $('#unittest').append(
         $('<div id="' + test + '""></div>').html(
@@ -38,10 +59,13 @@ UnitTest.DisplayFail = function (test, expected, actual) {
     )
 };
 
+/**
+ * Testing Initialization of TACAL
+ */
 UnitTest.testInitialization = function () {
+    var test = "testInitialization";
 
     // Arrange
-    var test = "testInitialization";
     var expected = true;
     var actual;
 
@@ -57,10 +81,13 @@ UnitTest.testInitialization = function () {
     }
 };
 
+/**
+ * Testing global variables DATES
+ */
 UnitTest.testDates = function () {
+    var test = "testDates";
 
     // Arrange
-    var test = "testDates";
     var expectedLength = 7;
     var actualLength;
     var expectedDay1 = 'Sun';
@@ -91,12 +118,15 @@ UnitTest.testDates = function () {
 
     UnitTest.DisplayPass(test);
 
-}
-;
+};
 
+/**
+ * Testing global variables MONTHS
+ */
 UnitTest.testMonths = function () {
-    // Arrange
     var test = "testMonths";
+
+    // Arrange
     var expectedLength = 12;
     var actualLength;
     var expectedMonth1 = 'January';
@@ -122,6 +152,67 @@ UnitTest.testMonths = function () {
 
     if (expectedMonth2 != actualMonth2) {
         UnitTest.DisplayFail(test, expectedMonth2, actualMonth2);
+        return;
+    }
+
+    UnitTest.DisplayPass(test);
+
+};
+
+/**
+ * Testing global variable CALDAYS
+ */
+UnitTest.testCaldays = function () {
+    var test = "testCaldays";
+
+    // Arrange
+    var expectedLength = 12;
+    var actualLength;
+    var expectedDecember = 31;
+    var actualDecember;
+    var expectedFebruary = 28;
+    var actualFebruary;
+
+    // Act
+    actualLength = TACAL.CALDAYS.length;
+    actualDecember = TACAL.CALDAYS[11]; // December
+    actualFebruary = TACAL.CALDAYS[1]; // February
+
+    // Assert
+    if (expectedLength != actualLength) {
+        UnitTest.DisplayFail(test, expectedLength, actualLength);
+        return;
+    }
+
+    if (expectedDecember != actualDecember) {
+        UnitTest.DisplayFail(test, expectedDecember, actualDecember);
+        return;
+    }
+
+    if (expectedFebruary != actualFebruary) {
+        UnitTest.DisplayFail(test, expectedFebruary, actualFebruary);
+        return;
+    }
+
+    UnitTest.DisplayPass(test);
+};
+
+/**
+ * Testing global variable TODAY
+ */
+UnitTest.testToday = function () {
+    var test = "testToday";
+
+    // Arrange
+    var expectedDate = new Date().toDateString();
+    var actualDate;
+
+    // Act
+    actualDate = TACAL.TODAY.toDateString();
+
+    // Assert
+    if(expectedDate != actualDate){
+        UnitTest.DisplayFail(test, expectedDate, actualDate);
         return;
     }
 
