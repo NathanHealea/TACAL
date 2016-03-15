@@ -5,3 +5,9 @@
  * Created: 3/15/16
  */
 
+/* Declaring TACAL object */
+var TACAL;
+
+/* Initializing TACAL object */
+TACAL = TACAL || {};
+
