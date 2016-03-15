@@ -49,7 +49,6 @@ crashlytics-build.properties
 
 
 # Plugins and extras
-/plugin
-/dev/js/jquery-2.2.1.min.js
-/dev/js/student-view-calendar.js
+/plugin/
+/dev/
 index.html
