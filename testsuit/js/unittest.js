@@ -22,6 +22,8 @@ $(function () {
     UnitTest.testCaldays();
     UnitTest.testToday();
     UnitTest.testLeapYear();
+    UnitTest.testCalendarConstruction();
+    UnitTest.testAddDates();
 
 });
 
@@ -228,12 +230,11 @@ UnitTest.testLeapYear = function () {
     var test = "testLeapYear";
 
     // Arrange
+    var tempdate = TACAL.TODAY;
     var expectedCurrentYear = true; // tested for 2016
     var actualCurrentYear;
     var expected2013 = false; // tested for 2013
     var actual2013;
-    var expected2013Calday = 29;
-    var acutual2013Calday;
 
 
     // Act
@@ -241,8 +242,9 @@ UnitTest.testLeapYear = function () {
     TACAL.TODAY.setFullYear(2013);
     TACAL.TODAY.setMonth(1);
     actual2013 = TACAL.LeapYear();
-    acutual2013Calday = TACAL.CALDAYS[1];
 
+    // Clean Up for other test
+    TACAL.TODAY = new Date();
 
 
     // Assert
@@ -260,4 +262,70 @@ UnitTest.testLeapYear = function () {
     UnitTest.DisplayPass(test);
 
 };
+
+/** Testing construction of calendar information */
+UnitTest.testCalendarConstruction = function(){
+    var test = "testCalendarConstruction";
+
+    // Arrange
+    var expected = true;
+    var actual;
+    var expectedLength = 7;
+    var actualLength;
+
+    // Act
+    actual = isNaN(TACAL.CALENDAR);
+
+    // Assert
+    if (expected != actual) {
+        UnitTest.DisplayFail(test, expected, actual);
+        return;
+    }
+
+    for(var i = 0; i < TACAL.CALENDAR.length; i++) {
+        // Act
+        actualLength = TACAL.CALENDAR[i].length;
+
+        // Assert
+        if (expectedLength != actualLength) {
+            UnitTest.DisplayFail(test, expectedLength, actualLength);
+            return;
+        }
+    }
+
+    UnitTest.DisplayPass(test);
+
+};
+
+/**
+ * Test the building of the calendar
+ */
+UnitTest.testAddDates = function(){
+    var test = "testAddDates";
+
+    // Arrange
+    var expected = false;
+    var actual;
+
+    // Act
+    for(var i = 0; i < 5; i ++){
+        for( var j = 0; j < 7; j++){
+
+            actual = isNaN(TACAL.CALENDAR[i][j]);
+
+            // Arrange
+            if(expected != actual){
+                UnitTest.DisplayFail(test, expected, actual);
+                return;
+            }
+
+        }
+    }
+
+
+
+
+    UnitTest.DisplayPass(test);
+};
+
 
