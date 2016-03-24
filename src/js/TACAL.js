@@ -107,7 +107,11 @@ TACAL.AddDates = function (year, month) {
     if (firstDayOfMonth != 1) {
         var lastMonthsDates = lastDayOfPreviousMonth - firstDayOfMonth + 1;
         for (var i = 0; i < firstDayOfMonth; i++) {
-            TACAL.CALENDAR[weekOfMonth][daysOfMonth] = lastMonthsDates;
+            var info = {year: year, month: month - 1, day: lastMonthsDates };
+
+            TACAL.CALENDAR[weekOfMonth][daysOfMonth] = TACAL.GetDateObj(info);
+
+            //TACAL.CALENDAR[weekOfMonth][daysOfMonth] = lastMonthsDates;
             lastMonthsDates++;
             daysOfMonth++;
 
@@ -117,10 +121,13 @@ TACAL.AddDates = function (year, month) {
     // Filling dates of the selected month
     do {
         do {
-            TACAL.CALENDAR[weekOfMonth][daysOfMonth] = date;
+            var info = {year: year, month: month - 1, day: date };
+
+            TACAL.CALENDAR[weekOfMonth][daysOfMonth] = TACAL.GetDateObj(info);
+            //TACAL.CALENDAR[weekOfMonth][daysOfMonth] = date;
             date++;
             daysOfMonth++;
-        } while (( daysOfMonth < 7) && ( date < maxDaysOfMonth + 1))
+        } while (( daysOfMonth < 7) && ( date < maxDaysOfMonth + 1));
 
         if (daysOfMonth == 7) {
             daysOfMonth = 0;
@@ -137,7 +144,9 @@ TACAL.AddDates = function (year, month) {
     if (lastDateOfMonth != 6) {
         var nextMonthsDates = 1;
         do {
-            TACAL.CALENDAR[weekOfMonth][daysOfMonth] = nextMonthsDates;
+            var info = {year: year, month: month + 1, day: nextMonthsDates };
+            TACAL.CALENDAR[weekOfMonth][daysOfMonth] = TACAL.GetDateObj(info);
+            //TACAL.CALENDAR[weekOfMonth][daysOfMonth] = nextMonthsDates;
             nextMonthsDates++;
             daysOfMonth++;
 
@@ -151,7 +160,7 @@ TACAL.AddDates = function (year, month) {
 
 /**
  * Creates a default calendar view of the current date.
- * 
+ *
  * @param id
  * @constructor
  */
@@ -166,9 +175,9 @@ TACAL.DisplayDefault = function (id) {
 
     // --> Start table row
     html += '<tr>';
-        for(var i = 0; i < TACAL.DAYS.length; i++){
-            html += '<th>' + TACAL.DAYS[i] + '</th>';
-        }
+    for (var i = 0; i < TACAL.DAYS.length; i++) {
+        html += '<th>' + TACAL.DAYS[i] + '</th>';
+    }
     html += '</tr>';
     // <-- End table row
 
@@ -180,11 +189,13 @@ TACAL.DisplayDefault = function (id) {
 
     console.log(TACAL.CALENDAR[1][0]);
 
-    for(var row = 0; row < TACAL.CALENDAR.length; row++){
+    for (var row = 0; row < TACAL.CALENDAR.length; row++) {
         // --> Start table row
         html += '<tr>';
-        for(var col = 0; col < TACAL.CALENDAR[row].length; col++){
-            html += '<td>' + TACAL.CALENDAR[row][col] + '</td>';
+        for (var col = 0; col < TACAL.CALENDAR[row].length; col++) {
+            html += '<td id="' + TACAL.CALENDAR[row][col].id +'">'
+                + TACAL.CALENDAR[row][col].date
+                + '</td>';
         }
         html += '</tr>';
         // <-- End table row
@@ -199,12 +210,36 @@ TACAL.DisplayDefault = function (id) {
     $('#' + id).html(html);
 };
 
+/**
+ * Converts year month day to unix time.
+ * @param year
+ * @param month
+ * @param day
+ * @returns {number}
+ * @constructor
+ */
+TACAL.GetUnixTime = function (year, month, day) {
 
-TACAL.GetUnixTime = function(year, month, day){
-  
-    return new Date(year,month,day).getTime();
+    return new Date(year, month, day).getTime();
 };
 
+/**
+ * Creates an object contain informaion to be render by calendar.
+ * @param args
+ * @returns {{id: number, date: *, content: string}}
+ * @constructor
+ */
+TACAL.GetDateObj = function (args) {
+    var obj = {
+        id: TACAL.GetUnixTime(args['year'], args['month'], args['day']),
+        date:args['day'],
+        content: ''};
+
+    return obj;
+
+
+
+};
 
 
 

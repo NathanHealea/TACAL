@@ -314,7 +314,7 @@ UnitTest.testAddDates = function () {
     for (var i = 0; i < 5; i++) {
         for (var j = 0; j < 7; j++) {
 
-            actual = isNaN(TACAL.CALENDAR[i][j]);
+            actual = isNaN(TACAL.CALENDAR[i][j].date);
 
             // Arrange
             if (expected != actual) {
@@ -345,7 +345,7 @@ UnitTest.testDisplayCalendar = function () {
     TACAL.DisplayDefault(id);
     actual = isNaN($('#' + id).html());
 
-    if(expected != actual){
+    if (expected != actual) {
         UnitTest.DisplayFail(test, expected, actual);
         return;
     }
@@ -353,17 +353,20 @@ UnitTest.testDisplayCalendar = function () {
     UnitTest.DisplayPass(test);
 };
 
+/**
+ * Test converting year, month, day to unix time.
+ */
 UnitTest.testGetUnixTime = function () {
     var test = "testGetUnixTime";
 
     // Arrange
 
-    var expected = new Date (2016, 03, 24).getTime();
+    var expected = new Date(2016, 03, 24).getTime();
     var actual = false;
 
     // Act
-    actual = TACAL.GetUnixTime(2016,03,24);
-    if(expected != actual){
+    actual = TACAL.GetUnixTime(2016, 03, 24);
+    if (expected != actual) {
         UnitTest.DisplayFail(test, expected, actual);
         return;
     }
