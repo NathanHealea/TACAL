@@ -44,7 +44,7 @@ TACAL.CALENDAR = null;
 /**
  * Sets TACAL information.
  */
-$(function () {
+TACAL.Init = function () {
     TACAL.TODAY = new Date();
 
     // Check if current month is February and if its a leap year
@@ -58,7 +58,7 @@ $(function () {
     TACAL.InitCalendar();
     TACAL.AddDates(TACAL.TODAY.getFullYear(), TACAL.TODAY.getMonth());
 
-});
+};
 
 /**
  * Determines if the current year is a leap year.
@@ -122,7 +122,7 @@ TACAL.AddDates = function (year, month) {
             daysOfMonth++;
         } while (( daysOfMonth < 7) && ( date < maxDaysOfMonth + 1))
 
-        if(daysOfMonth == 7) {
+        if (daysOfMonth == 7) {
             daysOfMonth = 0;
             weekOfMonth++;
         }
@@ -148,5 +148,63 @@ TACAL.AddDates = function (year, month) {
 
 
 };
+
+/**
+ * Creates a default calendar view of the current date.
+ * 
+ * @param id
+ * @constructor
+ */
+TACAL.DisplayDefault = function (id) {
+    var html = '';
+
+    // --> Start table
+    html += '<table>';
+
+    // --> Start header
+    html += '<thead>';
+
+    // --> Start table row
+    html += '<tr>';
+        for(var i = 0; i < TACAL.DAYS.length; i++){
+            html += '<th>' + TACAL.DAYS[i] + '</th>';
+        }
+    html += '</tr>';
+    // <-- End table row
+
+    html += '</theader>';
+    // <-- End header
+
+    // --> Start body
+    html += '<tbody>';
+
+    console.log(TACAL.CALENDAR[1][0]);
+
+    for(var row = 0; row < TACAL.CALENDAR.length; row++){
+        // --> Start table row
+        html += '<tr>';
+        for(var col = 0; col < TACAL.CALENDAR[row].length; col++){
+            html += '<td>' + TACAL.CALENDAR[row][col] + '</td>';
+        }
+        html += '</tr>';
+        // <-- End table row
+    }
+    html += '</tbody>';
+    // <-- End body
+
+    html += '</table>';
+    // <-- End table
+
+    // Adding Calender to giving id
+    $('#' + id).html(html);
+};
+
+
+TACAL.GetUnixTime = function(year, month, day){
+  
+    return new Date(year,month,day).getTime();
+};
+
+
 
 

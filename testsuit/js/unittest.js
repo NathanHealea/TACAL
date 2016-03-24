@@ -15,6 +15,7 @@ UnitTest = UnitTest || {};
  * Runs all test on page load
  */
 $(function () {
+    TACAL.Init();
 
     UnitTest.testInitialization();
     UnitTest.testDates();
@@ -24,6 +25,8 @@ $(function () {
     UnitTest.testLeapYear();
     UnitTest.testCalendarConstruction();
     UnitTest.testAddDates();
+    UnitTest.testDisplayCalendar();
+    UnitTest.testGetUnixTime();
 
 });
 
@@ -248,12 +251,12 @@ UnitTest.testLeapYear = function () {
 
 
     // Assert
-    if(expectedCurrentYear != actualCurrentYear){
+    if (expectedCurrentYear != actualCurrentYear) {
         UnitTest.DisplayFail(test, expectedCurrentYear, actualCurrentYear);
         return;
     }
 
-    if(expected2013 != actual2013){
+    if (expected2013 != actual2013) {
         UnitTest.DisplayFail(test, expected2013, actual2013);
         return;
     }
@@ -264,7 +267,7 @@ UnitTest.testLeapYear = function () {
 };
 
 /** Testing construction of calendar information */
-UnitTest.testCalendarConstruction = function(){
+UnitTest.testCalendarConstruction = function () {
     var test = "testCalendarConstruction";
 
     // Arrange
@@ -282,7 +285,7 @@ UnitTest.testCalendarConstruction = function(){
         return;
     }
 
-    for(var i = 0; i < TACAL.CALENDAR.length; i++) {
+    for (var i = 0; i < TACAL.CALENDAR.length; i++) {
         // Act
         actualLength = TACAL.CALENDAR[i].length;
 
@@ -300,7 +303,7 @@ UnitTest.testCalendarConstruction = function(){
 /**
  * Test the building of the calendar
  */
-UnitTest.testAddDates = function(){
+UnitTest.testAddDates = function () {
     var test = "testAddDates";
 
     // Arrange
@@ -308,13 +311,13 @@ UnitTest.testAddDates = function(){
     var actual;
 
     // Act
-    for(var i = 0; i < 5; i ++){
-        for( var j = 0; j < 7; j++){
+    for (var i = 0; i < 5; i++) {
+        for (var j = 0; j < 7; j++) {
 
             actual = isNaN(TACAL.CALENDAR[i][j]);
 
             // Arrange
-            if(expected != actual){
+            if (expected != actual) {
                 UnitTest.DisplayFail(test, expected, actual);
                 return;
             }
@@ -322,10 +325,51 @@ UnitTest.testAddDates = function(){
         }
     }
 
+    UnitTest.DisplayPass(test);
+};
 
+/**
+ * Test the displaying of the default calendar
+ */
+UnitTest.testDisplayCalendar = function () {
+    var test = "testDisplayCalendar";
 
+    // Arrange
+    var id = 'calendar';
+    var expected = true;
+    var actual;
+
+    // Act
+    $('#unittest').append('<div id="calendar"></div>');
+
+    TACAL.DisplayDefault(id);
+    actual = isNaN($('#' + id).html());
+
+    if(expected != actual){
+        UnitTest.DisplayFail(test, expected, actual);
+        return;
+    }
 
     UnitTest.DisplayPass(test);
 };
+
+UnitTest.testGetUnixTime = function () {
+    var test = "testGetUnixTime";
+
+    // Arrange
+
+    var expected = new Date (2016, 03, 24).getTime();
+    var actual = false;
+
+    // Act
+    actual = TACAL.GetUnixTime(2016,03,24);
+    if(expected != actual){
+        UnitTest.DisplayFail(test, expected, actual);
+        return;
+    }
+
+    UnitTest.DisplayPass(test);
+};
+
 
 
