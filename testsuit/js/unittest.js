@@ -335,12 +335,12 @@ UnitTest.testDisplayCalendar = function () {
     var test = "testDisplayCalendar";
 
     // Arrange
-    var id = 'calendar';
+    var id = 'cal';
     var expected = true;
     var actual;
 
     // Act
-    $('#unittest').append('<div id="calendar"></div>');
+    $('#unittest').append('<div id="cal"></div>');
 
     TACAL.DisplayDefault(id);
     actual = isNaN($('#' + id).html());

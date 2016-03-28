@@ -167,6 +167,17 @@ TACAL.AddDates = function (year, month) {
 TACAL.DisplayDefault = function (id) {
     var html = '';
 
+    // --> Start calendar wrapper
+    html += '<div class="calendar">';
+
+    // Building header
+
+    html += '<div class="calendar-header">';
+    html += '<div class="previous-month"> < </div>';
+    html += '<h2>' + TACAL.MONTHS[TACAL.TODAY.getMonth()] + '</h2>';
+    html += '<div class="next-month"> > </div>';
+    html += '</div>';
+
     // --> Start table
     html += '<table>';
 
@@ -176,7 +187,7 @@ TACAL.DisplayDefault = function (id) {
     // --> Start table row
     html += '<tr>';
     for (var i = 0; i < TACAL.DAYS.length; i++) {
-        html += '<th>' + TACAL.DAYS[i] + '</th>';
+        html += '<td>' + TACAL.DAYS[i] + '</td>';
     }
     html += '</tr>';
     // <-- End table row
@@ -206,6 +217,9 @@ TACAL.DisplayDefault = function (id) {
     html += '</table>';
     // <-- End table
 
+    html += '</div>';
+    // <-- End calendar wrapper
+
     // Adding Calender to giving id
     $('#' + id).html(html);
 };
@@ -224,7 +238,7 @@ TACAL.GetUnixTime = function (year, month, day) {
 };
 
 /**
- * Creates an object contain informaion to be render by calendar.
+ * Creates an object contain information to be render by calendar.
  * @param args
  * @returns {{id: number, date: *, content: string}}
  * @constructor
@@ -234,11 +248,7 @@ TACAL.GetDateObj = function (args) {
         id: TACAL.GetUnixTime(args['year'], args['month'], args['day']),
         date:args['day'],
         content: ''};
-
     return obj;
-
-
-
 };
 
 
