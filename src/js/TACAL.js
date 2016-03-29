@@ -6,6 +6,12 @@
  * Credited: CodePen.io username Mark
  * Url: http://codepen.io/xmark/pen/WQaXdv
  */
+
+/**
+ * Constructor for TACAL
+ * @param divId
+ * @constructor
+ */
 var TACAL = function(divId) {
 
     //Store div id
@@ -26,7 +32,9 @@ var TACAL = function(divId) {
 
 };
 
-// Goes to next month
+/**
+ * Goes to the next month
+ */
 TACAL.prototype.nextMonth = function() {
     if ( this.currMonth == 11 ) {
         this.currMonth = 0;
@@ -38,7 +46,9 @@ TACAL.prototype.nextMonth = function() {
     this.showcurr();
 };
 
-// Goes to previous month
+/**
+ * Goes to the previous month
+ */
 TACAL.prototype.previousMonth = function() {
     if ( this.currMonth == 0 ) {
         this.currMonth = 11;
@@ -50,12 +60,19 @@ TACAL.prototype.previousMonth = function() {
     this.showcurr();
 };
 
-// Show current month
+/**
+ * Show current month
+ */
 TACAL.prototype.showcurr = function() {
     this.showMonth(this.currYear, this.currMonth);
 };
 
-// Show month (year, month)
+
+/**
+ * Shows given month and year
+ * @param y
+ * @param m
+ */
 TACAL.prototype.showMonth = function(y, m) {
 
     var d = new Date()
@@ -152,7 +169,11 @@ window.onload = function() {
     };
 };*/
 
- // Get element by id
+/**
+ * Get element by id
+ * @param id
+ * @returns {Element}
+ */
  function getId(id) {
  return document.getElementById(id);
  };
