@@ -1,0 +1,39 @@
+.calendar {
+    max-width: 600px;
+}
+
+.calendar .calendar-header{
+    border: 2px solid lightsalmon;
+    border-radius: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.calendar .calendar-header .previous-month,
+.calendar .calendar-header .next-month
+{
+    width: 15%;
+    display: inline-block;
+    text-align: center;
+    cursor: pointer;
+}
+
+.calendar .calendar-header .current-month{
+    width: 70%;
+    display: inline-block;
+    text-align: center;
+}
+
+.calendar table{
+    text-align: center;
+    vertical-align: middle;
+    width: 100%;
+}
+
+.calendar table tr td{
+    border: 2px solid lightsalmon;
+    border-radius: 10px;
+    width: 14.2%;
+    height: 50px;
+}
+

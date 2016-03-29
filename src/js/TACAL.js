@@ -173,8 +173,9 @@ TACAL.DisplayDefault = function (id) {
     // Building header
 
     html += '<div class="calendar-header">';
+
     html += '<div class="previous-month"> < </div>';
-    html += '<h2>' + TACAL.MONTHS[TACAL.TODAY.getMonth()] + '</h2>';
+    html += '<div class="current-month">' + TACAL.MONTHS[TACAL.TODAY.getMonth()] + '</div>';
     html += '<div class="next-month"> > </div>';
     html += '</div>';
 
