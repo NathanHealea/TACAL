@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>TACAL - Test Suit</title>
    <!-- <link href="../calendar-test.css" rel="stylesheet" type="text/css"> -->
+
     <link href="../src/css/TACAL.css" rel="stylesheet" type="text/css">
 
 </head>
@@ -13,12 +14,30 @@
     <div id="unittest">
 
     </div>
+    <div class="calendar-wrapper">
+        <button id="btnPrev" type="button">Prev</button>
+        <button id="btnNext" type="button">Next</button>
+        <div id="divCal"></div>
+    </div>
 
 
     <!-- JS !-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.1/jquery.min.js"></script>
     <script src="../src/js/TACAL.js"></script>
     <script src="js/UnitTest.js"></script>
+    <script>
+        var ut = new UnitTest('divCal');
+/*        var cal = new TACAL('divCal');
+        cal.showcurr();
+
+        // Bind next and previous button clicks
+        getId('btnNext').onclick = function() {
+            cal.nextMonth();
+        };
+        getId('btnPrev').onclick = function() {
+            cal.previousMonth();
+        }*/
+    </script>
 
 </body>
 </html>
