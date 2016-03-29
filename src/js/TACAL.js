@@ -33,8 +33,6 @@ var TACAL = function (divId) {
     // holds an 2d array for the calendar.
     // this allows us to add more information to be display in the calendar.
     this.calendar = this.init();
-
-    this.displayVars();
 };
 
 
@@ -200,19 +198,20 @@ function getId(id) {
 
 
 TACAL.prototype.displayVars = function () {
+    console.log('* - - - - - - - Display Variables - - - - - - - *');
     console.log("Div Id: " + this.divId);
 
-    console.log("Day Of Week");
+    console.log("* - - Day Of Week - - *");
     console.log(this.DaysOfWeek);
 
-    console.log("Months");
+    console.log("* - - Months - - *");
     console.log(this.Months);
 
     console.log("Current Month: " + this.currMonth);
     console.log("Current Day: " + this.currDay);
     console.log("Current Year: " + this.currYear);
 
-    console.log("Calendar Days");
+    console.log("* - - Calendar Days - - *");
     console.log(this.calendar);
 
 }

@@ -6,19 +6,23 @@
  */
 
 /* Declaring UnitTest object */
-var UnitTest = function(id){
-    
+var UnitTest = function (id) {
+
     this.id = id;
     this.fail = 'FAILED';
     this.pass = 'PASSED';
-    
+
 
     this.testInitialization();
     this.testDates();
     this.testMonths();
-    /*UnitTest.prototype.testCaldays();*/
     this.testCurrentMonth();
     this.testCurrentDay();
+    this.testCurrentYear();
+    this.testCalendarConstruction();
+
+    var cal = new TACAL(this.id);
+    cal.displayVars();
 
 };
 /**
@@ -63,7 +67,7 @@ UnitTest.prototype.testInitialization = function () {
     // Arrange
     var expected = true;
     var actual;
-    
+
     // Act
     var cal = new TACAL(this.id);
     actual = isNaN(TACAL);
@@ -92,7 +96,6 @@ UnitTest.prototype.testDates = function () {
     // Act
     var cal = new TACAL(this.id);
     actualLength = cal.DaysOfWeek.length;
-    console.log(actualLength);
     actualDay1 = cal.DaysOfWeek[0];
     actualDay2 = cal.DaysOfWeek[6];
 
@@ -157,44 +160,6 @@ UnitTest.prototype.testMonths = function () {
 };
 
 /**
- * Testing global variable CALDAYS
- */
-/*UnitTest.prototype.testCaldays = function () {
-    var test = "testCaldays";
-
-    // Arrange
-    var expectedLength = 12;
-    var actualLength;
-    var expectedDecember = 31;
-    var actualDecember;
-    var expectedFebruary = 28;
-    var actualFebruary;
-
-    // Act
-    actualLength = TACAL.CALDAYS.length;
-    actualDecember = TACAL.CALDAYS[11]; // December
-    actualFebruary = TACAL.CALDAYS[1]; // February
-
-    // Assert
-    if (expectedLength != actualLength) {
-        this.DisplayFail(test, expectedLength, actualLength);
-        return;
-    }
-
-    if (expectedDecember != actualDecember) {
-        this.DisplayFail(test, expectedDecember, actualDecember);
-        return;
-    }
-
-    if (expectedFebruary != actualFebruary) {
-        this.DisplayFail(test, expectedFebruary, actualFebruary);
-        return;
-    }
-
-    this.DisplayPass(test);
-};*/
-
-/**
  * Testing public variable current month
  */
 UnitTest.prototype.testCurrentMonth = function () {
@@ -227,7 +192,7 @@ UnitTest.prototype.testCurrentDay = function () {
 
     // Arrange
 
-    var expectedDate = new Date().getDay();
+    var expectedDate = new Date().getDate();
     var actualDate;
 
     // Act
@@ -243,45 +208,34 @@ UnitTest.prototype.testCurrentDay = function () {
     this.DisplayPass(test);
 
 };
-/** Testing if february is a leap year */
-UnitTest.prototype.testLeapYear = function () {
-    var test = "testLeapYear";
+
+/**
+ * Testing public variable current year
+ */
+UnitTest.prototype.testCurrentYear = function () {
+    var test = "testCurrentYear";
 
     // Arrange
-    var tempdate = TACAL.TODAY;
-    var expectedCurrentYear = true; // tested for 2016
-    var actualCurrentYear;
-    var expected2013 = false; // tested for 2013
-    var actual2013;
 
+    var expectedDate = new Date().getFullYear();
+    var actualDate;
 
     // Act
-    actualCurrentYear = TACAL.LeapYear();
-    TACAL.TODAY.setFullYear(2013);
-    TACAL.TODAY.setMonth(1);
-    actual2013 = TACAL.LeapYear();
-
-    // Clean Up for other test
-    TACAL.TODAY = new Date();
-
+    var cal = new TACAL(this.id);
+    actualDate = cal.currYear;
 
     // Assert
-    if (expectedCurrentYear != actualCurrentYear) {
-        this.DisplayFail(test, expectedCurrentYear, actualCurrentYear);
+    if (expectedDate != actualDate) {
+        this.DisplayFail(test, expectedDate, actualDate);
         return;
     }
-
-    if (expected2013 != actual2013) {
-        this.DisplayFail(test, expected2013, actual2013);
-        return;
-    }
-
 
     this.DisplayPass(test);
-
 };
 
-/** Testing construction of calendar information */
+/**
+ * Testing construction of calendar information
+ */
 UnitTest.prototype.testCalendarConstruction = function () {
     var test = "testCalendarConstruction";
 
@@ -292,7 +246,8 @@ UnitTest.prototype.testCalendarConstruction = function () {
     var actualLength;
 
     // Act
-    actual = isNaN(TACAL.CALENDAR);
+    var cal = new TACAL(this.id);
+    actual = isNaN(cal.calendar);
 
     // Assert
     if (expected != actual) {
@@ -300,9 +255,9 @@ UnitTest.prototype.testCalendarConstruction = function () {
         return;
     }
 
-    for (var i = 0; i < TACAL.CALENDAR.length; i++) {
+    for (var i = 0; i < cal.calendar.length; i++) {
         // Act
-        actualLength = TACAL.CALENDAR[i].length;
+        actualLength = cal.calendar[i].length;
 
         // Assert
         if (expectedLength != actualLength) {
@@ -313,101 +268,6 @@ UnitTest.prototype.testCalendarConstruction = function () {
 
     this.DisplayPass(test);
 
-};
-
-/**
- * Test the building of the calendar
- */
-UnitTest.prototype.testAddDates = function () {
-    var test = "testAddDates";
-
-    // Arrange
-    var expected = false;
-    var actual;
-
-    // Act
-    for (var i = 0; i < 5; i++) {
-        for (var j = 0; j < 7; j++) {
-
-            actual = isNaN(TACAL.CALENDAR[i][j].date);
-
-            // Arrange
-            if (expected != actual) {
-                this.DisplayFail(test, expected, actual);
-                return;
-            }
-
-        }
-    }
-
-    this.DisplayPass(test);
-};
-
-/**
- * Test the displaying of the default calendar
- */
-UnitTest.prototype.testDisplayCalendar = function () {
-    var test = "testDisplayCalendar";
-
-    // Arrange
-    var id = 'cal';
-    var expected = true;
-    var actual;
-
-    // Act
-    $('#unittest').append('<div id="cal"></div>');
-
-    TACAL.DisplayDefault(id);
-    actual = isNaN($('#' + id).html());
-
-    if (expected != actual) {
-        this.DisplayFail(test, expected, actual);
-        return;
-    }
-
-    this.DisplayPass(test);
-};
-
-/**
- * Test converting year, month, day to unix time.
- */
-UnitTest.prototype.testGetUnixTime = function () {
-    var test = "testGetUnixTime";
-
-    // Arrange
-
-    var expected = new Date(2016, 03, 24).getTime();
-    var actual = false;
-
-    // Act
-    actual = TACAL.GetUnixTime(2016, 03, 24);
-    if (expected != actual) {
-        this.DisplayFail(test, expected, actual);
-        return;
-    }
-
-    this.DisplayPass(test);
-};
-
-/**
- * Test next month button
- */
-
-UnitTest.prototype.testNextMonth = function () {
-    var test = "testNextMonth";
-
-    // Arrange
-
-    var expected = true;
-    var actual = false;
-
-    // Act
-    if (expected != actual) {
-        this.DisplayFail(test, expected, actual);
-        return;
-    }
-
-    this.DisplayPass(test);
 };
 
 
