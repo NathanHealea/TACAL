@@ -2,255 +2,157 @@
  * Project: TACAL
  * File: TACAL.js
  * Author: Nathan Healea
- * Created: 3/15/16
+ * Created: 3/29/16
+ * Credited: CodePen.io username Mark
+ * Url: http://codepen.io/xmark/pen/WQaXdv
  */
+var TACAL = function(divId) {
 
-/* Declaring TACAL object */
-var TACAL;
+    //Store div id
+    this.divId = divId;
 
-/* Initializing TACAL object */
-TACAL = TACAL || {};
+    // Days of week, starting on Sunday
+    this.DaysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
-/**
- * Days of the week
- * @type {string[]}
- */
-TACAL.DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    // Months, stating on January
+    this.Months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December' ];
 
-/**
- * Months of the year
- * @type {string[]}
- */
-TACAL.MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    // Set the current month, year
+    var d = new Date();
 
-/**
- * Number of days in each month
- * @type {number[]}
- */
-TACAL.CALDAYS = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    this.currMonth = d.getMonth();
+    this.currYear = d.getFullYear();
+    this.currDay = d.getDate();
 
-/**
- * Holds the current date
- * @type {Date}
- */
-TACAL.TODAY = null;
+};
 
-/**
- * Hold calendar dates and id to be displayed.
- * @type {null}
- */
-TACAL.CALENDAR = null;
-
-/**
- * Sets TACAL information.
- */
-TACAL.Init = function () {
-    TACAL.TODAY = new Date();
-
-    // Check if current month is February and if its a leap year
-    if ((TACAL.TODAY.getMonth() == 1) && TACAL.LeapYear()) {
-
-        // Change February calendar days from 28 to 29
-        TACAL.CALDAYS[1] = 29;
+// Goes to next month
+TACAL.prototype.nextMonth = function() {
+    if ( this.currMonth == 11 ) {
+        this.currMonth = 0;
+        this.currYear = this.currYear + 1;
     }
-
-    // Initialize Calender
-    TACAL.InitCalendar();
-    TACAL.AddDates(TACAL.TODAY.getFullYear(), TACAL.TODAY.getMonth());
-
-};
-
-/**
- * Determines if the current year is a leap year.
- * @returns {boolean}
- */
-TACAL.LeapYear = function () {
-    var year = TACAL.TODAY.getFullYear();
-    return ((year % 4 == 0) && (year % 100 != 0)) || (year % 400 == 0);
-
-};
-
-/**
- * Fills CALENDAR with 31 nulls.
- * @constructor
- */
-TACAL.InitCalendar = function () {
-    TACAL.CALENDAR = new Array(5);
-    for (var i = 0; i < 5; i++) {
-        TACAL.CALENDAR[i] = new Array(7).fill(null);
+    else {
+        this.currMonth = this.currMonth + 1;
     }
+    this.showcurr();
 };
 
-/**
- * Add the day of the month of an array that will be rendered
- * @constructor
- */
-TACAL.AddDates = function (year, month) {
+// Goes to previous month
+TACAL.prototype.previousMonth = function() {
+    if ( this.currMonth == 0 ) {
+        this.currMonth = 11;
+        this.currYear = this.currYear - 1;
+    }
+    else {
+        this.currMonth = this.currMonth - 1;
+    }
+    this.showcurr();
+};
 
-    var maxDaysOfMonth = TACAL.CALDAYS[TACAL.TODAY.getMonth()];
-    var daysOfMonth = 0;
-    var weekOfMonth = 0;
-    var date = 1;
+// Show current month
+TACAL.prototype.showcurr = function() {
+    this.showMonth(this.currYear, this.currMonth);
+};
+
+// Show month (year, month)
+TACAL.prototype.showMonth = function(y, m) {
+
+    var d = new Date()
     // First day of the week in the selected month
-    var firstDayOfMonth = new Date(year, month, 1).getDay();
+        , firstDayOfMonth = new Date(y, m, 1).getDay()
     // Last day of the selected month
-    var lastDateOfMonth = new Date(year, month + 1).getDate();
+        , lastDateOfMonth =  new Date(y, m+1, 0).getDate()
     // Last day of the previous month
-    var lastDayOfPreviousMonth = 0 ? new Date(year - 1, 11, 0).getDate() : new Date(year, month, 0).getDate();
-
-    /*
-     Filling dates of previous month
-     if the first day of the selected month
-     is not on Sunday.
-     */
-
-    if (firstDayOfMonth != 1) {
-        var lastMonthsDates = lastDayOfPreviousMonth - firstDayOfMonth + 1;
-        for (var i = 0; i < firstDayOfMonth; i++) {
-            var info = {year: year, month: month - 1, day: lastMonthsDates };
-
-            TACAL.CALENDAR[weekOfMonth][daysOfMonth] = TACAL.GetDateObj(info);
-
-            //TACAL.CALENDAR[weekOfMonth][daysOfMonth] = lastMonthsDates;
-            lastMonthsDates++;
-            daysOfMonth++;
-
-        }
-    }
-
-    // Filling dates of the selected month
-    do {
-        do {
-            var info = {year: year, month: month - 1, day: date };
-
-            TACAL.CALENDAR[weekOfMonth][daysOfMonth] = TACAL.GetDateObj(info);
-            //TACAL.CALENDAR[weekOfMonth][daysOfMonth] = date;
-            date++;
-            daysOfMonth++;
-        } while (( daysOfMonth < 7) && ( date < maxDaysOfMonth + 1));
-
-        if (daysOfMonth == 7) {
-            daysOfMonth = 0;
-            weekOfMonth++;
-        }
-
-    } while (( weekOfMonth < 5) && ( date < maxDaysOfMonth + 1));
-
-    /*
-     Filling dates of next month
-     if the last day of the selected month
-     is not on Saturday.
-     */
-    if (lastDateOfMonth != 6) {
-        var nextMonthsDates = 1;
-        do {
-            var info = {year: year, month: month + 1, day: nextMonthsDates };
-            TACAL.CALENDAR[weekOfMonth][daysOfMonth] = TACAL.GetDateObj(info);
-            //TACAL.CALENDAR[weekOfMonth][daysOfMonth] = nextMonthsDates;
-            nextMonthsDates++;
-            daysOfMonth++;
-
-        } while (daysOfMonth < 7);
-    }
-
-    console.log(TACAL.CALENDAR);
+        , lastDayOfLastMonth = m == 0 ? new Date(y-1, 11, 0).getDate() : new Date(y, m, 0).getDate();
 
 
-};
+    var html = '<table>';
 
-/**
- * Creates a default calendar view of the current date.
- *
- * @param id
- * @constructor
- */
-TACAL.DisplayDefault = function (id) {
-    var html = '';
+    // Write selected month and year
+    html += '<thead><tr>';
+    html += '<td colspan="7">' + this.Months[m] + ' ' + y + '</td>';
+    html += '</tr></thead>';
 
-    // --> Start calendar wrapper
-    html += '<div class="calendar">';
 
-    // Building header
-
-    html += '<div class="calendar-header">';
-
-    html += '<div class="previous-month"> < </div>';
-    html += '<div class="current-month">' + TACAL.MONTHS[TACAL.TODAY.getMonth()] + '</div>';
-    html += '<div class="next-month"> > </div>';
-    html += '</div>';
-
-    // --> Start table
-    html += '<table>';
-
-    // --> Start header
-    html += '<thead>';
-
-    // --> Start table row
-    html += '<tr>';
-    for (var i = 0; i < TACAL.DAYS.length; i++) {
-        html += '<td>' + TACAL.DAYS[i] + '</td>';
+    // Write the header of the days of the week
+    html += '<tr class="days">';
+    for(var i=0; i < this.DaysOfWeek.length;i++) {
+        html += '<td>' + this.DaysOfWeek[i] + '</td>';
     }
     html += '</tr>';
-    // <-- End table row
 
-    html += '</theader>';
-    // <-- End header
+    // Write the days
+    var i=1;
+    do {
 
-    // --> Start body
-    html += '<tbody>';
+        var dow = new Date(y, m, i).getDay();
 
-    console.log(TACAL.CALENDAR[1][0]);
-
-    for (var row = 0; row < TACAL.CALENDAR.length; row++) {
-        // --> Start table row
-        html += '<tr>';
-        for (var col = 0; col < TACAL.CALENDAR[row].length; col++) {
-            html += '<td id="' + TACAL.CALENDAR[row][col].id +'">'
-                + TACAL.CALENDAR[row][col].date
-                + '</td>';
+        // If Sunday, start new row
+        if ( dow == 0 ) {
+            html += '<tr>';
         }
-        html += '</tr>';
-        // <-- End table row
-    }
-    html += '</tbody>';
-    // <-- End body
+        // If not Sunday but first day of the month
+        // it will write the last days from the previous month
+        else if ( i == 1 ) {
+            html += '<tr>';
+            var k = lastDayOfLastMonth - firstDayOfMonth+1;
+            for(var j=0; j < firstDayOfMonth; j++) {
+                html += '<td class="not-current">' + k + '</td>';
+                k++;
+            }
+        }
 
+        // Write the current day in the loop
+        var chk = new Date();
+        var chkY = chk.getFullYear();
+        var chkM = chk.getMonth();
+        if (chkY == this.currYear && chkM == this.currMonth && i == this.currDay) {
+            html += '<td class="today">' + i + '</td>';
+        } else {
+            html += '<td class="normal">' + i + '</td>';
+        }
+        // If Saturday, closes the row
+        if ( dow == 6 ) {
+            html += '</tr>';
+        }
+        // If not Saturday, but last day of the selected month
+        // it will write the next few days from the next month
+        else if ( i == lastDateOfMonth ) {
+            var k=1;
+            for(dow; dow < 6; dow++) {
+                html += '<td class="not-current">' + k + '</td>';
+                k++;
+            }
+        }
+
+        i++;
+    }while(i <= lastDateOfMonth);
+
+    // Closes table
     html += '</table>';
-    // <-- End table
 
-    html += '</div>';
-    // <-- End calendar wrapper
-
-    // Adding Calender to giving id
-    $('#' + id).html(html);
+    // Write HTML to the div
+    document.getElementById(this.divId).innerHTML = html;
 };
 
-/**
- * Converts year month day to unix time.
- * @param year
- * @param month
- * @param day
- * @returns {number}
- * @constructor
- */
-TACAL.GetUnixTime = function (year, month, day) {
+/*// On Load of the window
+window.onload = function() {
 
-    return new Date(year, month, day).getTime();
-};
+    // Start calendar
+    var c = new TACAL("divCal");
+    c.showcurr();
 
-/**
- * Creates an object contain information to be render by calendar.
- * @param args
- * @returns {{id: number, date: *, content: string}}
- * @constructor
- */
-TACAL.GetDateObj = function (args) {
-    var obj = {
-        id: TACAL.GetUnixTime(args['year'], args['month'], args['day']),
-        date:args['day'],
-        content: ''};
-    return obj;
-};
+    // Bind next and previous button clicks
+    getId('btnNext').onclick = function() {
+        c.nextMonth();
+    };
+    getId('btnPrev').onclick = function() {
+        c.previousMonth();
+    };
+};*/
 
-
-
+ // Get element by id
+ function getId(id) {
+ return document.getElementById(id);
+ };
