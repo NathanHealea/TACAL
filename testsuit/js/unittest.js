@@ -6,47 +6,31 @@
  */
 
 /* Declaring UnitTest object */
-var UnitTest;
+var UnitTest = function(id){
+    
+    this.id = id;
+    this.fail = 'FAILED';
+    this.pass = 'PASSED';
+    
 
-var id = 'divCal';
+    this.testInitialization();
+    this.testDates();
+    this.testMonths();
+    /*UnitTest.prototype.testCaldays();*/
+    this.testCurrentMonth();
+    this.testCurrentDay();
 
-/* Initializing UnitTest object */
-UnitTest = UnitTest || {};
-
-/**
- * Runs all test on page load
- */
-$(function () {
-
-
-    UnitTest.testInitialization();
-    UnitTest.testDates();
-    UnitTest.testMonths();
-    /*UnitTest.testCaldays();*/
-    UnitTest.testCurrentMonth();
-    UnitTest.testCurrentDay();
-    UnitTest.testLeapYear();
-    UnitTest.testCalendarConstruction();
-    UnitTest.testAddDates();
-    UnitTest.testDisplayCalendar();
-    UnitTest.testGetUnixTime();
-    UnitTest.testNextMonth();
-});
-
-// Defining Pass and Faill for consistency
-UnitTest.PASS = "PASS";
-UnitTest.FAIL = "FAIL";
-
+};
 /**
  * Display passing test message
  * @param test
  * @constructor
  */
-UnitTest.DisplayPass = function (test) {
+UnitTest.prototype.DisplayPass = function (test) {
     $('#unittest').append(
         $('<div id="' + test + '""></div>').html(
             test + ": "
-            + '<span style="color:green;">' + UnitTest.PASS + '</span>')
+            + '<span style="color:green;">' + this.pass + '</span>')
     );
 };
 
@@ -57,11 +41,11 @@ UnitTest.DisplayPass = function (test) {
  * @param actual
  * @constructor
  */
-UnitTest.DisplayFail = function (test, expected, actual) {
+UnitTest.prototype.DisplayFail = function (test, expected, actual) {
     $('#unittest').append(
         $('<div id="' + test + '""></div>').html(
             test + ": "
-            + '<span style="color:red;">' + UnitTest.FAIL + '</span>'
+            + '<span style="color:red;">' + this.fail + '</span>'
             + '<span style="width:10px;" > </span>'
             + '<b>Expected:</b> ' + expected
             + '<span style="width:10px;" > </span>'
@@ -73,31 +57,28 @@ UnitTest.DisplayFail = function (test, expected, actual) {
 /**
  * Testing Initialization of TACAL
  */
-UnitTest.testInitialization = function () {
+UnitTest.prototype.testInitialization = function () {
     var test = "testInitialization";
 
     // Arrange
     var expected = true;
     var actual;
-
-
+    
     // Act
-    var cal = new TACAL(id);
+    var cal = new TACAL(this.id);
     actual = isNaN(TACAL);
     // Assert
-    if (expected == actual) {
-        UnitTest.DisplayPass(test)
+    if (expected != actual) {
+        this.DisplayFail(test, expected, actual);
+        return;
     }
-    else {
-        UnitTest.DisplayFail(test, expected, actual);
-        return
-    }
+    this.DisplayPass(test);
 };
 
 /**
  * Testing global variables DATES
  */
-UnitTest.testDates = function () {
+UnitTest.prototype.testDates = function () {
     var test = "testDates";
 
     // Arrange
@@ -109,7 +90,7 @@ UnitTest.testDates = function () {
     var actualDay2;
 
     // Act
-    var cal = new TACAL(id);
+    var cal = new TACAL(this.id);
     actualLength = cal.DaysOfWeek.length;
     console.log(actualLength);
     actualDay1 = cal.DaysOfWeek[0];
@@ -117,28 +98,28 @@ UnitTest.testDates = function () {
 
     // Assert
     if (expectedLength != actualLength) {
-        UnitTest.DisplayFail(test, expectedLength, actualLength);
+        this.DisplayFail(test, expectedLength, actualLength);
         return;
     }
 
     if (expectedDay1 != actualDay1) {
-        UnitTest.DisplayFail(test, expectedDay1, actualDay1);
+        this.DisplayFail(test, expectedDay1, actualDay1);
         return;
     }
 
     if (expectedDay2 != actualDay2) {
-        UnitTest.DisplayFail(test, expectedDay2, actualDay2);
+        this.DisplayFail(test, expectedDay2, actualDay2);
         return;
     }
 
-    UnitTest.DisplayPass(test);
+    this.DisplayPass(test);
 
 };
 
 /**
  * Testing global variables MONTHS
  */
-UnitTest.testMonths = function () {
+UnitTest.prototype.testMonths = function () {
     var test = "testMonths";
 
     // Arrange
@@ -150,35 +131,35 @@ UnitTest.testMonths = function () {
     var actualMonth2;
 
     // Act
-    var cal = new TACAL(id);
+    var cal = new TACAL(this.id);
     actualLength = cal.Months.length;
     actualMonth1 = cal.Months[0];
     actualMonth2 = cal.Months[11];
 
     // Assert
     if (expectedLength != actualLength) {
-        UnitTest.DisplayFail(test, expectedLength, actualLength);
+        this.DisplayFail(test, expectedLength, actualLength);
         return;
     }
 
     if (expectedMonth1 != actualMonth1) {
-        UnitTest.DisplayFail(test, expectedMonth1, actualMonth1);
+        this.DisplayFail(test, expectedMonth1, actualMonth1);
         return;
     }
 
     if (expectedMonth2 != actualMonth2) {
-        UnitTest.DisplayFail(test, expectedMonth2, actualMonth2);
+        this.DisplayFail(test, expectedMonth2, actualMonth2);
         return;
     }
 
-    UnitTest.DisplayPass(test);
+    this.DisplayPass(test);
 
 };
 
 /**
  * Testing global variable CALDAYS
  */
-/*UnitTest.testCaldays = function () {
+/*UnitTest.prototype.testCaldays = function () {
     var test = "testCaldays";
 
     // Arrange
@@ -196,27 +177,27 @@ UnitTest.testMonths = function () {
 
     // Assert
     if (expectedLength != actualLength) {
-        UnitTest.DisplayFail(test, expectedLength, actualLength);
+        this.DisplayFail(test, expectedLength, actualLength);
         return;
     }
 
     if (expectedDecember != actualDecember) {
-        UnitTest.DisplayFail(test, expectedDecember, actualDecember);
+        this.DisplayFail(test, expectedDecember, actualDecember);
         return;
     }
 
     if (expectedFebruary != actualFebruary) {
-        UnitTest.DisplayFail(test, expectedFebruary, actualFebruary);
+        this.DisplayFail(test, expectedFebruary, actualFebruary);
         return;
     }
 
-    UnitTest.DisplayPass(test);
+    this.DisplayPass(test);
 };*/
 
 /**
  * Testing public variable current month
  */
-UnitTest.testCurrentMonth = function () {
+UnitTest.prototype.testCurrentMonth = function () {
     var test = "testCurrentMonth";
 
     // Arrange
@@ -225,23 +206,23 @@ UnitTest.testCurrentMonth = function () {
     var actualDate;
 
     // Act
-    var cal = new TACAL(id);
+    var cal = new TACAL(this.id);
     actualDate = cal.currMonth;
 
     // Assert
     if (expectedDate != actualDate) {
-        UnitTest.DisplayFail(test, expectedDate, actualDate);
+        this.DisplayFail(test, expectedDate, actualDate);
         return;
     }
 
-    UnitTest.DisplayPass(test);
+    this.DisplayPass(test);
 
 };
 
 /**
  * Testing public variable current day
  */
-UnitTest.testCurrentDay = function () {
+UnitTest.prototype.testCurrentDay = function () {
     var test = "testCurrentDay";
 
     // Arrange
@@ -250,20 +231,20 @@ UnitTest.testCurrentDay = function () {
     var actualDate;
 
     // Act
-    var cal = new TACAL(id);
+    var cal = new TACAL(this.id);
     actualDate = cal.currDay;
 
     // Assert
     if (expectedDate != actualDate) {
-        UnitTest.DisplayFail(test, expectedDate, actualDate);
+        this.DisplayFail(test, expectedDate, actualDate);
         return;
     }
 
-    UnitTest.DisplayPass(test);
+    this.DisplayPass(test);
 
 };
 /** Testing if february is a leap year */
-UnitTest.testLeapYear = function () {
+UnitTest.prototype.testLeapYear = function () {
     var test = "testLeapYear";
 
     // Arrange
@@ -286,22 +267,22 @@ UnitTest.testLeapYear = function () {
 
     // Assert
     if (expectedCurrentYear != actualCurrentYear) {
-        UnitTest.DisplayFail(test, expectedCurrentYear, actualCurrentYear);
+        this.DisplayFail(test, expectedCurrentYear, actualCurrentYear);
         return;
     }
 
     if (expected2013 != actual2013) {
-        UnitTest.DisplayFail(test, expected2013, actual2013);
+        this.DisplayFail(test, expected2013, actual2013);
         return;
     }
 
 
-    UnitTest.DisplayPass(test);
+    this.DisplayPass(test);
 
 };
 
 /** Testing construction of calendar information */
-UnitTest.testCalendarConstruction = function () {
+UnitTest.prototype.testCalendarConstruction = function () {
     var test = "testCalendarConstruction";
 
     // Arrange
@@ -315,7 +296,7 @@ UnitTest.testCalendarConstruction = function () {
 
     // Assert
     if (expected != actual) {
-        UnitTest.DisplayFail(test, expected, actual);
+        this.DisplayFail(test, expected, actual);
         return;
     }
 
@@ -325,19 +306,19 @@ UnitTest.testCalendarConstruction = function () {
 
         // Assert
         if (expectedLength != actualLength) {
-            UnitTest.DisplayFail(test, expectedLength, actualLength);
+            this.DisplayFail(test, expectedLength, actualLength);
             return;
         }
     }
 
-    UnitTest.DisplayPass(test);
+    this.DisplayPass(test);
 
 };
 
 /**
  * Test the building of the calendar
  */
-UnitTest.testAddDates = function () {
+UnitTest.prototype.testAddDates = function () {
     var test = "testAddDates";
 
     // Arrange
@@ -352,20 +333,20 @@ UnitTest.testAddDates = function () {
 
             // Arrange
             if (expected != actual) {
-                UnitTest.DisplayFail(test, expected, actual);
+                this.DisplayFail(test, expected, actual);
                 return;
             }
 
         }
     }
 
-    UnitTest.DisplayPass(test);
+    this.DisplayPass(test);
 };
 
 /**
  * Test the displaying of the default calendar
  */
-UnitTest.testDisplayCalendar = function () {
+UnitTest.prototype.testDisplayCalendar = function () {
     var test = "testDisplayCalendar";
 
     // Arrange
@@ -380,17 +361,17 @@ UnitTest.testDisplayCalendar = function () {
     actual = isNaN($('#' + id).html());
 
     if (expected != actual) {
-        UnitTest.DisplayFail(test, expected, actual);
+        this.DisplayFail(test, expected, actual);
         return;
     }
 
-    UnitTest.DisplayPass(test);
+    this.DisplayPass(test);
 };
 
 /**
  * Test converting year, month, day to unix time.
  */
-UnitTest.testGetUnixTime = function () {
+UnitTest.prototype.testGetUnixTime = function () {
     var test = "testGetUnixTime";
 
     // Arrange
@@ -401,18 +382,18 @@ UnitTest.testGetUnixTime = function () {
     // Act
     actual = TACAL.GetUnixTime(2016, 03, 24);
     if (expected != actual) {
-        UnitTest.DisplayFail(test, expected, actual);
+        this.DisplayFail(test, expected, actual);
         return;
     }
 
-    UnitTest.DisplayPass(test);
+    this.DisplayPass(test);
 };
 
 /**
  * Test next month button
  */
 
-UnitTest.testNextMonth = function () {
+UnitTest.prototype.testNextMonth = function () {
     var test = "testNextMonth";
 
     // Arrange
@@ -422,11 +403,11 @@ UnitTest.testNextMonth = function () {
 
     // Act
     if (expected != actual) {
-        UnitTest.DisplayFail(test, expected, actual);
+        this.DisplayFail(test, expected, actual);
         return;
     }
 
-    UnitTest.DisplayPass(test);
+    this.DisplayPass(test);
 };
 
 
