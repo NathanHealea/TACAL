@@ -8,6 +8,8 @@
 /* Declaring UnitTest object */
 var UnitTest;
 
+var id = 'divCal';
+
 /* Initializing UnitTest object */
 UnitTest = UnitTest || {};
 
@@ -15,19 +17,20 @@ UnitTest = UnitTest || {};
  * Runs all test on page load
  */
 $(function () {
-    TACAL.Init();
+
 
     UnitTest.testInitialization();
     UnitTest.testDates();
     UnitTest.testMonths();
-    UnitTest.testCaldays();
-    UnitTest.testToday();
+    /*UnitTest.testCaldays();*/
+    UnitTest.testCurrentMonth();
+    UnitTest.testCurrentDay();
     UnitTest.testLeapYear();
     UnitTest.testCalendarConstruction();
     UnitTest.testAddDates();
     UnitTest.testDisplayCalendar();
     UnitTest.testGetUnixTime();
-
+    UnitTest.testNextMonth();
 });
 
 // Defining Pass and Faill for consistency
@@ -77,7 +80,9 @@ UnitTest.testInitialization = function () {
     var expected = true;
     var actual;
 
+
     // Act
+    var cal = new TACAL(id);
     actual = isNaN(TACAL);
     // Assert
     if (expected == actual) {
@@ -104,9 +109,11 @@ UnitTest.testDates = function () {
     var actualDay2;
 
     // Act
-    actualLength = TACAL.DAYS.length;
-    actualDay1 = TACAL.DAYS[0];
-    actualDay2 = TACAL.DAYS[6];
+    var cal = new TACAL(id);
+    actualLength = cal.DaysOfWeek.length;
+    console.log(actualLength);
+    actualDay1 = cal.DaysOfWeek[0];
+    actualDay2 = cal.DaysOfWeek[6];
 
     // Assert
     if (expectedLength != actualLength) {
@@ -143,9 +150,10 @@ UnitTest.testMonths = function () {
     var actualMonth2;
 
     // Act
-    actualLength = TACAL.MONTHS.length;
-    actualMonth1 = TACAL.MONTHS[0];
-    actualMonth2 = TACAL.MONTHS[11];
+    var cal = new TACAL(id);
+    actualLength = cal.Months.length;
+    actualMonth1 = cal.Months[0];
+    actualMonth2 = cal.Months[11];
 
     // Assert
     if (expectedLength != actualLength) {
@@ -170,7 +178,7 @@ UnitTest.testMonths = function () {
 /**
  * Testing global variable CALDAYS
  */
-UnitTest.testCaldays = function () {
+/*UnitTest.testCaldays = function () {
     var test = "testCaldays";
 
     // Arrange
@@ -203,20 +211,22 @@ UnitTest.testCaldays = function () {
     }
 
     UnitTest.DisplayPass(test);
-};
+};*/
 
 /**
- * Testing global variable TODAY
+ * Testing public variable current month
  */
-UnitTest.testToday = function () {
-    var test = "testToday";
+UnitTest.testCurrentMonth = function () {
+    var test = "testCurrentMonth";
 
     // Arrange
-    var expectedDate = new Date().toDateString();
+
+    var expectedDate = new Date().getMonth();
     var actualDate;
 
     // Act
-    actualDate = TACAL.TODAY.toDateString();
+    var cal = new TACAL(id);
+    actualDate = cal.currMonth;
 
     // Assert
     if (expectedDate != actualDate) {
@@ -228,6 +238,30 @@ UnitTest.testToday = function () {
 
 };
 
+/**
+ * Testing public variable current day
+ */
+UnitTest.testCurrentDay = function () {
+    var test = "testCurrentDay";
+
+    // Arrange
+
+    var expectedDate = new Date().getDay();
+    var actualDate;
+
+    // Act
+    var cal = new TACAL(id);
+    actualDate = cal.currDay;
+
+    // Assert
+    if (expectedDate != actualDate) {
+        UnitTest.DisplayFail(test, expectedDate, actualDate);
+        return;
+    }
+
+    UnitTest.DisplayPass(test);
+
+};
 /** Testing if february is a leap year */
 UnitTest.testLeapYear = function () {
     var test = "testLeapYear";
@@ -374,5 +408,25 @@ UnitTest.testGetUnixTime = function () {
     UnitTest.DisplayPass(test);
 };
 
+/**
+ * Test next month button
+ */
+
+UnitTest.testNextMonth = function () {
+    var test = "testNextMonth";
+
+    // Arrange
+
+    var expected = true;
+    var actual = false;
+
+    // Act
+    if (expected != actual) {
+        UnitTest.DisplayFail(test, expected, actual);
+        return;
+    }
+
+    UnitTest.DisplayPass(test);
+};
 
 
