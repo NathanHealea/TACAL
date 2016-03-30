@@ -22,7 +22,18 @@ var UnitTest = function (id) {
     this.testCalendarConstruction();
 
     var cal = new TACAL(this.id);
-    cal.displayVars();
+    cal.showcurr();
+    cal.displayVars('Initialization');
+
+    // Bind next and previous button clicks
+    getId('btnNext').onclick = function() {
+        cal.nextMonth();
+        cal.displayVars('onClick Next');
+    };
+    getId('btnPrev').onclick = function() {
+        cal.previousMonth();
+        cal.displayVars('onClick Prev');
+    }
 
 };
 /**

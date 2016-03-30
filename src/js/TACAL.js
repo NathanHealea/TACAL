@@ -33,6 +33,7 @@ var TACAL = function (divId) {
     // holds an 2d array for the calendar.
     // this allows us to add more information to be display in the calendar.
     this.calendar = this.init();
+    this.addDate(this.currYear, this.currMonth);
 };
 
 
@@ -62,6 +63,8 @@ TACAL.prototype.nextMonth = function () {
         this.currMonth = this.currMonth + 1;
     }
     this.showcurr();
+    this.addDate(this.currYear, this.currMonth);
+
 };
 
 /**
@@ -76,6 +79,7 @@ TACAL.prototype.previousMonth = function () {
         this.currMonth = this.currMonth - 1;
     }
     this.showcurr();
+    this.addDate(this.currYear, this.currMonth);
 };
 
 /**
@@ -171,6 +175,67 @@ TACAL.prototype.showMonth = function (y, m) {
     document.getElementById(this.divId).innerHTML = html;
 };
 
+TACAL.prototype.addDate = function (y, m) {
+
+    // Day of the week (ex: 0 = sun)
+    var day = 0;
+    // Indexer for the week we are adding dates to
+    var week = 0;
+    // Holds the current date being added (for current month)
+    var date = 1;
+    // Starting day of the current month
+    var firstDayOfCurrentMonth = new Date(y, m, 1).getDay();
+    // Last day of the current month
+    var lastDayOfCurrentMonth = new Date(y, m + 1, 0).getDay();
+    // Number of days in the current month (ex: july = 31)
+    var numberOfDays = new Date(y, m + 1, 0 ).getDate();
+    // Last day of the previous month
+    var lastDayOfPreviousMonth = 0 ? new Date(y - 1, 11, 0).getDate() : new Date(y, m, 0).getDate();
+    /*
+     Filling dates of previous month
+     if the first day of the selected month
+     is not on Sunday.
+     */
+
+    if (firstDayOfCurrentMonth != 1) {
+        var lastMonthsDates = lastDayOfPreviousMonth - firstDayOfCurrentMonth + 1;
+        for (var i = 0; i < firstDayOfCurrentMonth; i++) {
+            this.calendar[week][day] = lastMonthsDates;
+            lastMonthsDates++;
+            day++;
+        }
+    }
+
+    // Filling dates of the selected month
+    do {
+        do {
+            this.calendar[week][day] = date;
+            date++;
+            day++;
+        } while (( day < 7) && ( date < numberOfDays + 1));
+
+        if (day == 7) {
+            day = 0;
+            week++;
+        }
+
+    } while (( week < 5) && ( date < numberOfDays + 1));
+
+    /*
+     Filling dates of next month
+     if the last day of the selected month
+     is not on Saturday.
+     */
+    if (lastDayOfCurrentMonth != 6 && day != 6) {
+        var nextMonthsDates = 1;
+        do {
+            this.calendar[week][day] = nextMonthsDates;
+            nextMonthsDates++;
+            day++;
+
+        } while (day < 7);
+    }
+};
 /*// On Load of the window
  window.onload = function() {
 
@@ -197,8 +262,10 @@ function getId(id) {
 }
 
 
-TACAL.prototype.displayVars = function () {
-    console.log('* - - - - - - - Display Variables - - - - - - - *');
+TACAL.prototype.displayVars = function (event) {
+    console.log('* - - - - - - Display Variables: '
+        + event
+        +' - - - - - - *');
     console.log("Div Id: " + this.divId);
 
     console.log("* - - Day Of Week - - *");
@@ -214,4 +281,4 @@ TACAL.prototype.displayVars = function () {
     console.log("* - - Calendar Days - - *");
     console.log(this.calendar);
 
-}
+};
