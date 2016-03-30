@@ -20,17 +20,18 @@ var UnitTest = function (id) {
     this.testCurrentDay();
     this.testCurrentYear();
     this.testCalendarConstruction();
+    this.testAddDates();
 
     var cal = new TACAL(this.id);
     cal.showcurr();
     cal.displayVars('Initialization');
 
     // Bind next and previous button clicks
-    getId('btnNext').onclick = function() {
+    getId('btnNext').onclick = function () {
         cal.nextMonth();
         cal.displayVars('onClick Next');
     };
-    getId('btnPrev').onclick = function() {
+    getId('btnPrev').onclick = function () {
         cal.previousMonth();
         cal.displayVars('onClick Prev');
     }
@@ -86,12 +87,13 @@ UnitTest.prototype.testInitialization = function () {
     var test = "testInitialization";
 
     // Arrange
-    var expected = true;
+    var expected = false;
     var actual;
 
     // Act
     var cal = new TACAL(this.id);
-    actual = isNaN(TACAL);
+    //actual = isNUll(cal);
+    actual = isNUll(cal);
     // Assert
     if (expected != actual) {
         this.DisplayFail(test, expected, actual);
@@ -261,14 +263,14 @@ UnitTest.prototype.testCalendarConstruction = function () {
     var test = "testCalendarConstruction";
 
     // Arrange
-    var expected = true;
+    var expected = false;
     var actual;
     var expectedLength = 7;
     var actualLength;
 
     // Act
     var cal = new TACAL(this.id);
-    actual = isNaN(cal.calendar);
+    actual = isNUll(cal.calendar);
 
     // Assert
     if (expected != actual) {
@@ -288,6 +290,49 @@ UnitTest.prototype.testCalendarConstruction = function () {
     }
 
     this.DisplayPass(test);
+
+};
+
+/**
+ * Testing dates being added to the calendar
+ */
+UnitTest.prototype.testAddDates = function () {
+    var test = "testAddDates";
+
+    // Arrange
+    var expected = false;
+    var actual;
+
+    // Act
+    var cal = new TACAL(this.id);
+
+    for (var i = 0; i < cal.calendar.length; i++) {
+        for (var j = 0; j < cal.calendar[i].length; j++) {
+
+            actual = isNUll(cal.calendar[i][j]);
+
+            // Assert
+            if (expected != actual) {
+                this.DisplayFail(test, expected, actual);
+                return;
+            }
+        }
+    }
+
+    this.DisplayPass(test);
+};
+
+function isNUll(obj){
+    if(obj === undefined){
+        return true;
+    }
+    else if(obj === null || obj == 'null'){
+        return true;
+    }
+    else if(obj == {}){
+        return true;
+    }
+    return false;
 
 };
 
