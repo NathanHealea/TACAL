@@ -1,0 +1,70 @@
+html, body {
+    padding: 0px;
+    margin: 0px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;;
+}
+
+header{
+    clear:both;
+}
+footer{
+    clear: both;
+    text-align: center;
+}
+section{
+    float:left;
+    height: 100%;
+}
+
+.container{
+    margin-left: 10px;
+    margin-right:10px;
+}
+.row {
+    clear:both;
+}
+.col {
+    width: 49.66667%;
+    float:left;
+}
+
+
+/* Test results colors */
+
+.fail {
+    background-color: lightcoral;
+}
+
+.pass {
+    background-color: lightgreen;
+}
+
+/* Test display structure */
+.test {
+    display: table;
+    padding: 5px;
+    border-radius: 10px;
+    margin: 5px 0px;
+    height: 35px;
+    width: calc(100% - 10px)
+}
+
+.test .test-name {
+    width: 100%;
+    height: 100%;
+    vertical-align: middle;
+    display: table-cell;
+    font-weight: bold;
+}
+
+.test .test-results {
+    padding-left: 10px;
+}
+
+.test .test-results .test-expected,
+.test .test-results .test-actual {
+    width: 100%;
+}

@@ -32,9 +32,11 @@ var UnitTest = function (id) {
  */
 UnitTest.prototype.DisplayPass = function (test) {
     $('#unittest').append(
-        $('<div id="' + test + '""></div>').html(
-            test + ": "
-            + '<span style="color:green;">' + this.pass + '</span>')
+        $('<div id="' + test + '" class="test pass"></div>').html(
+            /*test + ": "
+             + '<span style="color:green;">' + this.pass + '</span>'*/
+            '<div class="test-name">' + test + '</div>'
+        )
     );
 };
 
@@ -47,13 +49,21 @@ UnitTest.prototype.DisplayPass = function (test) {
  */
 UnitTest.prototype.DisplayFail = function (test, expected, actual) {
     $('#unittest').append(
-        $('<div id="' + test + '""></div>').html(
-            test + ": "
-            + '<span style="color:red;">' + this.fail + '</span>'
-            + '<span style="width:10px;" > </span>'
-            + '<b>Expected:</b> ' + expected
-            + '<span style="width:10px;" > </span>'
-            + '<b>Actual:</b> ' + actual
+        /*$('<div id="' + test + '""></div>').html(
+         test + ": "
+         + '<span style="color:red;">' + this.fail + '</span>'
+         + '<span style="width:10px;" > </span>'
+         + '<b>Expected:</b> ' + expected
+         + '<span style="width:10px;" > </span>'
+         + '<b>Actual:</b> ' + actual*/
+        $('<div id="' + test + '" class="test fail"></div>').html(
+            /*test + ": "
+             + '<span style="color:green;">' + this.pass + '</span>'*/
+            '<div class="test-name">' + test + '</div>'
+            + '<div class="test-results">'
+            + '<div class="test-expected"><strong>Expected: </strong>' + expected + '</div>'
+            + '<div class="test-actual"><strong>Actual: </strong>' + actual + '</div>'
+            + '</div>'
         )
     )
 };

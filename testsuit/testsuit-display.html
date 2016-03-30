@@ -3,21 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <title>TACAL - Test Suit</title>
-   <!-- <link href="../calendar-test.css" rel="stylesheet" type="text/css"> -->
 
-    <link href="../src/css/TACAL.css" rel="stylesheet" type="text/css">
+    <!-- Unit Test css !-->
+    <link href="css/unit-test.css" rel="stylesheet" type="text/css">
+
+    <!-- TACAL css !-->
+    <!-- <link href="../calendar-test.css" rel="stylesheet" type="text/css"> -->
 
 </head>
 <body>
-    <h1>Technology Across the Curriculum Calendar</h1>
-    <h3>Test Suit</h3>
-    <div id="unittest">
+    <div class="container">
+        <header>
+            <h1>Technology Across the Curriculum Calendar</h1>
+        </header>
+        <div class="row">
+            <section class="col">
+                <div class="row">
+                    <h3>Test Suit</h3>
+                </div>
+                <div class="row" id="unittest">
 
-    </div>
-    <div class="calendar-wrapper">
-        <button id="btnPrev" type="button">Prev</button>
-        <button id="btnNext" type="button">Next</button>
-        <div id="divCal"></div>
+                </div>
+            </section>
+            <section class="col">
+                <div class="calendar-wrapper">
+                    <button id="btnPrev" type="button">Prev</button>
+                    <button id="btnNext" type="button">Next</button>
+                    <div id="divCal"></div>
+                </div>
+            </section>
+        </div>
     </div>
 
 
@@ -27,16 +42,16 @@
     <script src="js/UnitTest.js"></script>
     <script>
         var ut = new UnitTest('divCal');
-/*        var cal = new TACAL('divCal');
-        cal.showcurr();
+        /*        var cal = new TACAL('divCal');
+         cal.showcurr();
 
-        // Bind next and previous button clicks
-        getId('btnNext').onclick = function() {
-            cal.nextMonth();
-        };
-        getId('btnPrev').onclick = function() {
-            cal.previousMonth();
-        }*/
+         // Bind next and previous button clicks
+         getId('btnNext').onclick = function() {
+         cal.nextMonth();
+         };
+         getId('btnPrev').onclick = function() {
+         cal.previousMonth();
+         }*/
     </script>
 
 </body>
