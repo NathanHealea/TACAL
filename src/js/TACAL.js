@@ -92,8 +92,8 @@ TACAL.prototype.showcurr = function () {
 
 /**
  * Shows given month and year
- * @param y
- * @param m
+ * @param y (year)
+ * @param m (month)
  */
 TACAL.prototype.showMonth = function (y, m) {
 
@@ -175,6 +175,11 @@ TACAL.prototype.showMonth = function (y, m) {
     document.getElementById(this.divId).innerHTML = html;
 };
 
+/**
+ * Take a given year and month and fills in calendar with correct days.
+ * @param y (year)
+ * @param m (month)
+ */
 TACAL.prototype.addDate = function (y, m) {
 
     // Day of the week (ex: 0 = sun)
