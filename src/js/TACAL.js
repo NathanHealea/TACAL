@@ -62,8 +62,8 @@ TACAL.prototype.nextMonth = function () {
     else {
         this.currMonth = this.currMonth + 1;
     }
-    this.showcurr();
     this.addDate(this.currYear, this.currMonth);
+    this.showcurr();
 
 };
 
@@ -78,99 +78,76 @@ TACAL.prototype.previousMonth = function () {
     else {
         this.currMonth = this.currMonth - 1;
     }
-    this.showcurr();
+
     this.addDate(this.currYear, this.currMonth);
+    this.showcurr();
 };
 
 /**
  * Show current month
  */
 TACAL.prototype.showcurr = function () {
-    this.showMonth(this.currYear, this.currMonth);
+    //this.showMonth(this.currYear, this.currMonth);
+    this.showMonth();
 };
 
-
 /**
- * Shows given month and year
- * @param y (year)
- * @param m (month)
+ * Displays the calendar with the selected months days
  */
-TACAL.prototype.showMonth = function (y, m) {
-
-    var d = new Date()
-    // First day of the week in the selected month
-        , firstDayOfMonth = new Date(y, m, 1).getDay()
-    // Last day of the selected month
-        , lastDateOfMonth = new Date(y, m + 1, 0).getDate()
-    // Last day of the previous month
-        , lastDayOfLastMonth = m == 0 ? new Date(y - 1, 11, 0).getDate() : new Date(y, m, 0).getDate();
+TACAL.prototype.showMonth = function(){
+    // --> Start calendar wrapper
+    html = '';
 
 
-    var html = '<table>';
+    // --> Start table
+    html += '<table>';
 
-    // Write selected month and year
-    html += '<thead><tr>';
-    html += '<td colspan="7">' + this.Months[m] + ' ' + y + '</td>';
-    html += '</tr></thead>';
+    // --> Start header
+    html += '<thead>';
 
+    // --> Start row
+    html += '<tr>';
+    // --> Write selected month and year
+    html += '<td colspan="7">' + this.Months[this.currMonth] + ' ' + this.currYear + '</td>';
+    html += '</tr>';
+    // <--  End row
 
-    // Write the header of the days of the week
-    html += '<tr class="days">';
+    html += '</theader>';
+    // <-- End header
+
+    // --> Start body
+    html += '<tbody>';
+
+    // displaying days of the week
+    // --> Start row
+    html += '<tr>';
     for (var i = 0; i < this.DaysOfWeek.length; i++) {
+        // --> Write the days of the week
         html += '<td>' + this.DaysOfWeek[i] + '</td>';
     }
     html += '</tr>';
-
-    // Write the days
-    var i = 1;
-    do {
-
-        var dow = new Date(y, m, i).getDay();
-
-        // If Sunday, start new row
-        if (dow == 0) {
-            html += '<tr>';
+    // <-- End row
+    
+    for (var row = 0; row < this.calendar.length; row++) {
+        // --> Start table row
+        html += '<tr>';
+        for (var col = 0; col < this.calendar[row].length; col++) {
+            html += '<td id="' + this.calendar[row][col].id +'">'
+                + this.calendar[row][col]
+                + '</td>';
         }
-        // If not Sunday but first day of the month
-        // it will write the last days from the previous month
-        else if (i == 1) {
-            html += '<tr>';
-            var k = lastDayOfLastMonth - firstDayOfMonth + 1;
-            for (var j = 0; j < firstDayOfMonth; j++) {
-                html += '<td class="not-current">' + k + '</td>';
-                k++;
-            }
-        }
+        html += '</tr>';
+        // <-- End table row
+    }
+    html += '</tbody>';
+    // <-- End body
 
-        // Write the current day in the loop
-        var chk = new Date();
-        var chkY = chk.getFullYear();
-        var chkM = chk.getMonth();
-        if (chkY == this.currYear && chkM == this.currMonth && i == this.currDay) {
-            html += '<td class="today">' + i + '</td>';
-        } else {
-            html += '<td class="normal">' + i + '</td>';
-        }
-        // If Saturday, closes the row
-        if (dow == 6) {
-            html += '</tr>';
-        }
-        // If not Saturday, but last day of the selected month
-        // it will write the next few days from the next month
-        else if (i == lastDateOfMonth) {
-            var k = 1;
-            for (dow; dow < 6; dow++) {
-                html += '<td class="not-current">' + k + '</td>';
-                k++;
-            }
-        }
-
-        i++;
-    } while (i <= lastDateOfMonth);
-
-    // Closes table
     html += '</table>';
+    // <-- End table
 
+    html += '</div>';
+    // <-- End calendar wrapper
+    
     // Write HTML to the div
     document.getElementById(this.divId).innerHTML = html;
 };
