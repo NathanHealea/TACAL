@@ -1,12 +1,16 @@
+/*
+ - Project: TACAL
+ - File: demo.css
+ - Author: Nathan Healea
+ - Created: 3/31/16
+*/
+
 .calendar-wrapper {
-    margin: 3em auto;
+    /*margin: 3em auto;*/
     padding: 2em;
-    border-radius: 5px;
-    font-family: "Avant Garde", Avantgarde, "Century Gothic", CenturyGothic, "AppleGothic", sans-serif;
-
+    /*border-radius: 5px;*/
+    font-family: Inconsolata, Monaco, 'Andale Mono', monospace;
 }
-
-
 
 .calendar-wrapper #btnPrev,
 .calendar-wrapper #btnNext {
@@ -15,7 +19,6 @@
     outline: none;
     font-size: 1em;
     cursor: pointer;
-    font-family: "Roboto Condensed", sans-serif;
     text-transform: uppercase;
     transition: all 0.3s ease;
 }

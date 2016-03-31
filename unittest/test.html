@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TACAL - Unit Test</title>
+
+    <link href="../src/css/tac.css" rel="stylesheet" type="text/css">
+
+    <!-- TACAL css !-->
+    <link href="../src/css/tacal.css" rel="stylesheet" type="text/css">
+
+    <!-- Unit Test css !-->
+    <link href="css/unittest.css" rel="stylesheet" type="text/css">
+
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1 class="title">Technology Across the Curriculum Calendar</h1>
+        </header>
+        <section class="col-2">
+            <h3 class="title">Test Suit</h3>
+            <div class="row" id="unittest">
+
+            </div>
+        </section>
+        <section class="col-2">
+            <h3 class="title">Calendar View</h3>
+            <div class="calendar-wrapper">
+                <button id="btnPrev" type="button">Prev</button>
+                <button id="btnNext" type="button">Next</button>
+                <div id="divCal"></div>
+            </div>
+        </section>
+    </div>
+
+
+    <!-- JS !-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.1/jquery.min.js"></script>
+    <script src="../src/js/tacal.js"></script>
+    <script src="js/UnitTest.js"></script>
+    <script>
+        var ut = new UnitTest('divCal');
+    </script>
+
+</body>
+</html>

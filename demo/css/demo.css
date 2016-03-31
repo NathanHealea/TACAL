@@ -1,0 +1,15 @@
+/*
+ - Project: TACAL
+ - File: demo.css
+ - Author: Nathan Healea
+ - Created: 3/31/16
+*/
+
+#cal1{
+
+}
+
+#cal1 .calendar-wrapper{
+    margin: 0 auto;
+    width: 500px;
+}

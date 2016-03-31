@@ -1,32 +1,12 @@
-html, body {
-    padding: 0px;
-    margin: 0px;
-}
+/*
+ - Project: TACAL
+ - File: demo.css
+ - Author: Nathan Healea
+ - Created: 3/31/16
+*/
 
-h1, h2, h3, h4, h5, h6 {
-    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;;
-}
-
-header{
-    clear:both;
-}
-footer{
-    clear: both;
-    text-align: center;
-}
-section{
-    float:left;
-    height: 100%;
-}
-
-.container{
-    margin-left: 10px;
-    margin-right:10px;
-}
-.row {
-    clear:both;
-}
-.col {
+.col-2 {
+    clear: none;
     width: 49.66667%;
     float:left;
 }

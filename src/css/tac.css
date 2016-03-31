@@ -1,0 +1,30 @@
+/*
+ - Project: TACAL
+ - File: tac.css
+ - Author: Nathan Healea
+ - Created: 3/31/16
+*/
+
+html, body{
+    margin: 0px;
+    padding: 0px;
+    background-color:#F5F2ED;
+    font-family: Inconsolata, Monaco, 'Andale Mono', monospace;
+}
+
+header, section, footer{
+    clear: both;
+    width: 100%;
+}
+h3{
+    text-transform: uppercase;
+}
+
+.title{
+    text-align: center;
+}
+
+.container{
+    margin-left: 10px;
+    margin-right:10px;
+}
