@@ -1,39 +1,54 @@
-.calendar {
-    max-width: 600px;
+.calendar-wrapper {
+    margin: 3em auto;
+    padding: 2em;
+    border-radius: 5px;
+    font-family: "Avant Garde", Avantgarde, "Century Gothic", CenturyGothic, "AppleGothic", sans-serif;
+
 }
 
-.calendar .calendar-header{
-    border: 2px solid lightsalmon;
-    border-radius: 10px;
-    padding-top: 5px;
-    padding-bottom: 5px;
-}
 
-.calendar .calendar-header .previous-month,
-.calendar .calendar-header .next-month
-{
-    width: 15%;
-    display: inline-block;
-    text-align: center;
+
+.calendar-wrapper #btnPrev,
+.calendar-wrapper #btnNext {
+    background: transparent;
+    border: none;
+    outline: none;
+    font-size: 1em;
     cursor: pointer;
+    font-family: "Roboto Condensed", sans-serif;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
 }
 
-.calendar .calendar-header .current-month{
-    width: 70%;
-    display: inline-block;
-    text-align: center;
+.calendar-wrapper #btnPrev {
+    float: left;
+    margin-bottom: 20px;
 }
 
-.calendar table{
+.calendar-wrapper #btnNext {
+    float: right;
+    margin-bottom: 20px;
+}
+
+table {
+    clear: both;
+    width: 100%;
+    border-radius: 3px;
+    border-collapse: collapse;
+}
+
+td {
+    height: 48px;
     text-align: center;
     vertical-align: middle;
-    width: 100%;
+    width: calc(100% / 7);
 }
 
-.calendar table tr td{
-    border: 2px solid lightsalmon;
-    border-radius: 10px;
-    width: 14.2%;
-    height: 50px;
+thead td {
+    border: none;
+    text-transform: uppercase;
+    font-size: 1.5em;
 }
-
+tbody tr.days {
+    font-weight: bold;
+}

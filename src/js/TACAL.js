@@ -120,7 +120,7 @@ TACAL.prototype.showMonth = function(){
 
     // displaying days of the week
     // --> Start row
-    html += '<tr>';
+    html += '<tr class="days">';
     for (var i = 0; i < this.DaysOfWeek.length; i++) {
         // --> Write the days of the week
         html += '<td>' + this.DaysOfWeek[i] + '</td>';
