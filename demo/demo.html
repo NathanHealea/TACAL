@@ -27,7 +27,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.1/jquery.min.js"></script>
     <script src="../src/js/tacal.js" rel="script"></script>
     <script>
-        var cal = new TACAL('clndr');
+        var options = {
+            divId:'clndr',
+            cssClass: 'not-current'
+        };
+        var cal = new TACAL(options);
         cal.showcurr();
 
         // Bind next and previous button clicks

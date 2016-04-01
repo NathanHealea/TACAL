@@ -26,6 +26,7 @@ var TACAL = function (options) {
     this.currMonth = d.getMonth();
     this.currYear = d.getFullYear();
     this.currDay = d.getDate();
+    this.currWeeks = this.getWeeksInMonth();
 
     // holds an 2d array for the calendar.
     // this allows us to add more information to be display in the calendar.
@@ -56,6 +57,12 @@ var TACAL = function (options) {
  * @param options
  */
 TACAL.prototype.setVariables = function(options){
+    if(options == null){
+        options = {
+            divId: 'divCal',
+            cssClass:'not-current'
+        }
+    }
     var keys = Object.keys(options);
 
     for(var i in keys){
@@ -65,7 +72,6 @@ TACAL.prototype.setVariables = function(options){
     }
 };
 
-
 /**
  * Return an array 5 X 7 fill with null
  * 5 weeks for the month
@@ -73,8 +79,8 @@ TACAL.prototype.setVariables = function(options){
  * @returns {Array}
  */
 TACAL.prototype.init = function () {
-    var cal = new Array(5);
-    for (var i = 0; i < 5; i++) {
+    var cal = new Array(this.currWeeks);
+    for (var i = 0; i < this.currWeeks; i++) {
         cal[i] = new Array(7).fill(null);
     }
     return cal;
@@ -91,6 +97,8 @@ TACAL.prototype.nextMonth = function () {
     else {
         this.currMonth = this.currMonth + 1;
     }
+    this.currWeeks = this.getWeeksInMonth();
+    this.calendar = this.init();
     this.addDate(this.currYear, this.currMonth);
     this.showcurr();
 
@@ -238,14 +246,14 @@ TACAL.prototype.addDate = function (y, m) {
             week++;
         }
 
-    } while (( week < 5) && ( date < numberOfDays + 1));
+    } while (( week < this.currWeeks) && ( date < numberOfDays + 1));
 
     /*
      Filling dates of next month
      if the last day of the selected month
      is not on Saturday.
      */
-    if (lastDayOfCurrentMonth != 6 && day != 6) {
+     if (lastDayOfCurrentMonth != 6 && day != 6) {
         var nextMonthsDates = 1;
         do {
             this.calendar[week][day] = {date:nextMonthsDates, current:false};
@@ -281,6 +289,21 @@ function getId(id) {
 }
 
 /**
+ * Calculates the number of weeks in a month
+ * @param y
+ * @param m
+ * @returns {number}
+ */
+TACAL.prototype.getWeeksInMonth = function() {
+    var year         = this.currYear;
+    var month_number = this.currMonth;
+    var firstOfMonth = new Date(year, month_number, 1);
+    var lastOfMonth  = new Date(year, month_number+1, 0);
+    var used         = firstOfMonth.getDay() + lastOfMonth.getDate();
+    return Math.ceil( used / 7);
+};
+
+/**
  * Displays tacal variables after an given event
  * @param event
  */
@@ -299,6 +322,7 @@ TACAL.prototype.displayVars = function (event) {
     console.log("Current Month: " + this.currMonth);
     console.log("Current Day: " + this.currDay);
     console.log("Current Year: " + this.currYear);
+    console.log("Number of Weeks: " + this.currWeeks);
 
     console.log("* - - Calendar Days - - *");
     console.log(this.calendar);

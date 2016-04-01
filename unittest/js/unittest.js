@@ -8,11 +8,12 @@
 /* Declaring UnitTest object */
 var UnitTest = function (id) {
 
-    this.options = {
+    /*this.options = {
         divId: 'divCal',
         cssClass: 'not-current'
 
-    };
+    };*/
+    this.options = null;
     this.fail = 'FAILED';
     this.pass = 'PASSED';
 
@@ -92,7 +93,8 @@ UnitTest.prototype.testInitialization = function () {
 
     // Arrange
     var expected = false;
-    var expectedDivId = this.options.divId;
+    /*var expectedDivId = this.options.divId;*/
+    var expectedDivId = null;
     var actualCal;
     var actualCal2;
     var actualDivId;
