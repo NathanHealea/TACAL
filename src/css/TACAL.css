@@ -55,3 +55,6 @@ thead td {
 tbody tr.days {
     font-weight: bold;
 }
+tbody tr td.not-current{
+    color:#c0c0c0;
+}

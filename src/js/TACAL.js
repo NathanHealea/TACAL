@@ -51,6 +51,10 @@ var TACAL = function (options) {
     this.addDate(this.currYear, this.currMonth);
 };
 
+/**
+ * Sets option for TACAL
+ * @param options
+ */
 TACAL.prototype.setVariables = function(options){
     var keys = Object.keys(options);
 
@@ -157,9 +161,17 @@ TACAL.prototype.showMonth = function(){
         // --> Start table row
         html += '<tr>';
         for (var col = 0; col < this.calendar[row].length; col++) {
-            html += '<td id="' + this.calendar[row][col].id +'">'
-                + this.calendar[row][col]
-                + '</td>';
+            if(this.calendar[row][col].current != true) {
+
+                html += '<td class="' + this.cssClass + '">'
+                    + this.calendar[row][col].date
+                    + '</td>';
+            }
+            else{
+                html += '<td>'
+                    + this.calendar[row][col].date
+                    + '</td>';
+            }
         }
         html += '</tr>';
         // <-- End table row
@@ -207,7 +219,7 @@ TACAL.prototype.addDate = function (y, m) {
     if (firstDayOfCurrentMonth != 1) {
         var lastMonthsDates = lastDayOfPreviousMonth - firstDayOfCurrentMonth + 1;
         for (var i = 0; i < firstDayOfCurrentMonth; i++) {
-            this.calendar[week][day] = lastMonthsDates;
+            this.calendar[week][day] = {date:lastMonthsDates, current:false};
             lastMonthsDates++;
             day++;
         }
@@ -216,7 +228,7 @@ TACAL.prototype.addDate = function (y, m) {
     // Filling dates of the selected month
     do {
         do {
-            this.calendar[week][day] = date;
+            this.calendar[week][day] = {date:date, current:true};
             date++;
             day++;
         } while (( day < 7) && ( date < numberOfDays + 1));
@@ -236,7 +248,7 @@ TACAL.prototype.addDate = function (y, m) {
     if (lastDayOfCurrentMonth != 6 && day != 6) {
         var nextMonthsDates = 1;
         do {
-            this.calendar[week][day] = nextMonthsDates;
+            this.calendar[week][day] = {date:nextMonthsDates, current:false};
             nextMonthsDates++;
             day++;
 
@@ -268,7 +280,10 @@ function getId(id) {
     return document.getElementById(id);
 }
 
-
+/**
+ * Displays tacal variables after an given event
+ * @param event
+ */
 TACAL.prototype.displayVars = function (event) {
     console.log('* - - - - - - Display Variables: '
         + event

@@ -9,7 +9,8 @@
 var UnitTest = function (id) {
 
     this.options = {
-        divId: 'divCal'
+        divId: 'divCal',
+        cssClass: 'not-current'
 
     };
     this.fail = 'FAILED';
