@@ -8,7 +8,10 @@
 /* Declaring UnitTest object */
 var UnitTest = function (id) {
 
-    this.id = id;
+    this.options = {
+        divId: 'divCal'
+
+    };
     this.fail = 'FAILED';
     this.pass = 'PASSED';
 
@@ -22,7 +25,7 @@ var UnitTest = function (id) {
     this.testCalendarConstruction();
     this.testAddDates();
 
-    var cal = new TACAL(this.id);
+    var cal = new TACAL(this.options);
     cal.showcurr();
     cal.displayVars('Initialization');
 
@@ -88,17 +91,37 @@ UnitTest.prototype.testInitialization = function () {
 
     // Arrange
     var expected = false;
-    var actual;
+    var expectedDivId = this.options.divId;
+    var actualCal;
+    var actualCal2;
+    var actualDivId;
 
     // Act
-    var cal = new TACAL(this.id);
-    //actual = isNUll(cal);
-    actual = isNUll(cal);
+    var cal = new TACAL(this.options);
+    actualCal = isNUll(cal);
+    var cal2 = new TACAL({
+        divId: 'divCal'
+    });
+    actualCal2 = isNUll(cal2);
+    actualDivId = cal2.divId;
+
+
     // Assert
-    if (expected != actual) {
-        this.DisplayFail(test, expected, actual);
+    if (expected != actualCal) {
+        this.DisplayFail(test, expected, actualCal);
         return;
     }
+
+    if (expected != actualCal2) {
+        this.DisplayFail(test, expected, actualCal);
+        return;
+    }
+
+    if(expectedDivId != actualDivId){
+        this.DisplayFail(test, expectedDivId, actualDivId);
+        return;
+    }
+
     this.DisplayPass(test);
 };
 
@@ -117,7 +140,7 @@ UnitTest.prototype.testDates = function () {
     var actualDay2;
 
     // Act
-    var cal = new TACAL(this.id);
+    var cal = new TACAL(this.options);
     actualLength = cal.DaysOfWeek.length;
     actualDay1 = cal.DaysOfWeek[0];
     actualDay2 = cal.DaysOfWeek[6];
@@ -157,7 +180,7 @@ UnitTest.prototype.testMonths = function () {
     var actualMonth2;
 
     // Act
-    var cal = new TACAL(this.id);
+    var cal = new TACAL(this.options);
     actualLength = cal.Months.length;
     actualMonth1 = cal.Months[0];
     actualMonth2 = cal.Months[11];
@@ -194,7 +217,7 @@ UnitTest.prototype.testCurrentMonth = function () {
     var actualDate;
 
     // Act
-    var cal = new TACAL(this.id);
+    var cal = new TACAL(this.options);
     actualDate = cal.currMonth;
 
     // Assert
@@ -219,7 +242,7 @@ UnitTest.prototype.testCurrentDay = function () {
     var actualDate;
 
     // Act
-    var cal = new TACAL(this.id);
+    var cal = new TACAL(this.options);
     actualDate = cal.currDay;
 
     // Assert
@@ -244,7 +267,7 @@ UnitTest.prototype.testCurrentYear = function () {
     var actualDate;
 
     // Act
-    var cal = new TACAL(this.id);
+    var cal = new TACAL(this.options);
     actualDate = cal.currYear;
 
     // Assert
@@ -269,7 +292,7 @@ UnitTest.prototype.testCalendarConstruction = function () {
     var actualLength;
 
     // Act
-    var cal = new TACAL(this.id);
+    var cal = new TACAL(this.options);
     actual = isNUll(cal.calendar);
 
     // Assert
@@ -304,7 +327,7 @@ UnitTest.prototype.testAddDates = function () {
     var actual;
 
     // Act
-    var cal = new TACAL(this.id);
+    var cal = new TACAL(this.options);
 
     for (var i = 0; i < cal.calendar.length; i++) {
         for (var j = 0; j < cal.calendar[i].length; j++) {

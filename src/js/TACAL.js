@@ -12,11 +12,8 @@
  * @param divId
  * @constructor
  */
-var TACAL = function (divId) {
-
-    //Store div id
-    this.divId = divId;
-
+var TACAL = function (options) {
+    /* * * Pre-defined Variables * * */
     // Days of week, starting on Sunday
     this.DaysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
@@ -33,7 +30,35 @@ var TACAL = function (divId) {
     // holds an 2d array for the calendar.
     // this allows us to add more information to be display in the calendar.
     this.calendar = this.init();
+
+
+    /* * * Variables * * */
+    // Store div id
+    this.divId = null;
+
+    // Stores events
+    this.events = null;
+
+    // Store css classes
+    this.cssClass = null;
+
+    // Stores css id
+    this.cssId = null;
+
+    this.setVariables(options);
+
+
     this.addDate(this.currYear, this.currMonth);
+};
+
+TACAL.prototype.setVariables = function(options){
+    var keys = Object.keys(options);
+
+    for(var i in keys){
+        if(this.hasOwnProperty(keys[i])){
+          this[keys[i]]  = options[keys[i]];
+        }
+    }
 };
 
 
@@ -127,7 +152,7 @@ TACAL.prototype.showMonth = function(){
     }
     html += '</tr>';
     // <-- End row
-    
+
     for (var row = 0; row < this.calendar.length; row++) {
         // --> Start table row
         html += '<tr>';
@@ -147,7 +172,7 @@ TACAL.prototype.showMonth = function(){
 
     html += '</div>';
     // <-- End calendar wrapper
-    
+
     // Write HTML to the div
     document.getElementById(this.divId).innerHTML = html;
 };

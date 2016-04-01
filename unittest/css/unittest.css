@@ -7,7 +7,7 @@
 
 .col-2 {
     clear: none;
-    width: 49.66667%;
+    width: calc(100% / 2);
     float:left;
 }
 
