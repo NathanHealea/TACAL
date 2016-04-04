@@ -253,7 +253,7 @@ TACAL.prototype.addDate = function (y, m) {
      if the last day of the selected month
      is not on Saturday.
      */
-     if (lastDayOfCurrentMonth != 6 && day != 6) {
+     if (lastDayOfCurrentMonth != 6 && day < 7) {
         var nextMonthsDates = 1;
         do {
             this.calendar[week][day] = {date:nextMonthsDates, current:false};
