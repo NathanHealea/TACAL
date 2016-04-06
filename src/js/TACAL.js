@@ -41,7 +41,7 @@ var TACAL = function (args) {
     // sets variables;
     this.setVariables(args);
 
-    // add dates to calendards.
+    // add dates to calendar.
     this.addDate(this.currYear, this.currMonth);
 };
 
@@ -307,21 +307,7 @@ TACAL.prototype.addDate = function (y, m) {
         } while (day < 7);
     }
 };
-/*// On Load of the window
- window.onload = function() {
 
- // Start calendar
- var c = new TACAL("divCal");
- c.showcurr();
-
- // Bind next and previous button clicks
- getId('btnNext').onclick = function() {
- c.nextMonth();
- };
- getId('btnPrev').onclick = function() {
- c.previousMonth();
- };
- };*/
 
 /**
  * Get element by id
