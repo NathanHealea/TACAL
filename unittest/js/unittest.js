@@ -26,15 +26,10 @@ var UnitTest = function (id) {
     };
 
     this.options = {
-        divId: 'divCal',
-        cssClass: {
-            notCurrent: 'not-currnet',
-            meet: 'meet',
-            notMeet: 'notMeet',
-            is_Wordsalad: 'isWordsalad',
-            notWordSalad: 'notWordSalad'
-        },
-        events: this.events
+        divId: 'cal1'
+    };
+    this.optionsTwo = {
+        divId: 'cal2'
     };
 
 
@@ -52,19 +47,15 @@ var UnitTest = function (id) {
     this.testAddDates();
     this.testDateIdentifier();
 
-    var cal = new TACAL(this.options);
-    cal.showcurr();
-    cal.displayVars('Initialization');
+    var cal1 = new TACAL(this.options);
+    cal1.showcurr();
+    cal1.displayVars('Initialization');
+
+    var cal2 = new TACAL(this.optionsTwo);
+    cal2.showcurr();
 
     // Bind next and previous button clicks
-    getId('btnNext').onclick = function () {
-        cal.nextMonth();
-        cal.displayVars('onClick Next');
-    };
-    getId('btnPrev').onclick = function () {
-        cal.previousMonth();
-        cal.displayVars('onClick Prev');
-    }
+    
 
 };
 /**
