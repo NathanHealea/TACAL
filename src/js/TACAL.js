@@ -12,7 +12,7 @@
  * @param divId
  * @constructor
  */
-var TACAL = function (options) {
+var TACAL = function (args) {
     /* * * Pre-defined Variables * * */
     // Days of week, starting on Sunday
     this.DaysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -37,37 +37,60 @@ var TACAL = function (options) {
     // Store div id
     this.divId = null;
 
-    // Stores events
-    this.events = null;
 
-    // Store css classes
-    this.cssClass = null;
+    // sets variables;
+    this.setVariables(args);
 
-    // Stores css id
-    this.cssId = null;
-
-    this.setVariables(options);
-
-
+    // add dates to calendards.
     this.addDate(this.currYear, this.currMonth);
+};
+
+var DAY = function (args) {
+
+    // Hold the date id
+    this.id = null;
+
+    // Holds the date
+    this.date = null;
+
+    // Holds the month
+    this.month = null;
+
+    // hold the year
+    this.year = null;
+
+    // is it the current month
+    this.current = null;
+
+    // set the date, month, year if passed arguments.
+    if (args != null) {
+        var keys = Object.keys(args);
+        for (var i in keys) {
+            if (this.hasOwnProperty(keys[i])) {
+                this[keys[i]] = args[keys[i]];
+            }
+        }
+
+        this.id = this.year + '-' + this.month + '-' + this.date;
+    }
 };
 
 /**
  * Sets option for TACAL
  * @param options
  */
-TACAL.prototype.setVariables = function(options){
-    if(options == null){
+TACAL.prototype.setVariables = function (options) {
+    if (options == null) {
         options = {
             divId: 'divCal',
-            cssClass:'not-current'
+            cssClass: 'not-current'
         }
     }
     var keys = Object.keys(options);
 
-    for(var i in keys){
-        if(this.hasOwnProperty(keys[i])){
-          this[keys[i]]  = options[keys[i]];
+    for (var i in keys) {
+        if (this.hasOwnProperty(keys[i])) {
+            this[keys[i]] = options[keys[i]];
         }
     }
 };
@@ -131,7 +154,7 @@ TACAL.prototype.showcurr = function () {
 /**
  * Displays the calendar with the selected months days
  */
-TACAL.prototype.showMonth = function(){
+TACAL.prototype.showMonth = function () {
     // --> Start calendar wrapper
     html = '';
 
@@ -169,13 +192,13 @@ TACAL.prototype.showMonth = function(){
         // --> Start table row
         html += '<tr>';
         for (var col = 0; col < this.calendar[row].length; col++) {
-            if(this.calendar[row][col].current != true) {
+            if (this.calendar[row][col].current != true) {
 
-                html += '<td class="' + this.cssClass + '">'
+                html += '<td class="not-current">'
                     + this.calendar[row][col].date
                     + '</td>';
             }
-            else{
+            else {
                 html += '<td>'
                     + this.calendar[row][col].date
                     + '</td>';
@@ -215,19 +238,27 @@ TACAL.prototype.addDate = function (y, m) {
     // Last day of the current month
     var lastDayOfCurrentMonth = new Date(y, m + 1, 0).getDay();
     // Number of days in the current month (ex: july = 31)
-    var numberOfDays = new Date(y, m + 1, 0 ).getDate();
+    var numberOfDays = new Date(y, m + 1, 0).getDate();
     // Last day of the previous month
     var lastDayOfPreviousMonth = 0 ? new Date(y - 1, 11, 0).getDate() : new Date(y, m, 0).getDate();
+    // Number of previous month
+    var lastMonth = (( m - 1 < 0) ? 11 : m - 1);
+    // Previous month year
+    var lastMonthYear = (( m - 1 < 0) ? y - 1 : y );
+    // Number of next month
+    var nextMonth = (( m + 1 > 11) ? 0 : m + 1);
+    // Previous month year
+    var nextMonthYear = (( m + 1 > 11) ? y + 1 : y );
+
     /*
      Filling dates of previous month
      if the first day of the selected month
      is not on Sunday.
      */
-
     if (firstDayOfCurrentMonth != 1) {
         var lastMonthsDates = lastDayOfPreviousMonth - firstDayOfCurrentMonth + 1;
         for (var i = 0; i < firstDayOfCurrentMonth; i++) {
-            this.calendar[week][day] = {date:lastMonthsDates, current:false};
+            this.calendar[week][day] = new DAY({date: lastMonthsDates, month: lastMonth, year: lastMonthYear, current:false});
             lastMonthsDates++;
             day++;
         }
@@ -236,7 +267,7 @@ TACAL.prototype.addDate = function (y, m) {
     // Filling dates of the selected month
     do {
         do {
-            this.calendar[week][day] = {date:date, current:true};
+            this.calendar[week][day] = new DAY({date: date, month: this.currMonth, year: this.currYear, current:true});
             date++;
             day++;
         } while (( day < 7) && ( date < numberOfDays + 1));
@@ -253,10 +284,10 @@ TACAL.prototype.addDate = function (y, m) {
      if the last day of the selected month
      is not on Saturday.
      */
-     if (lastDayOfCurrentMonth != 6 && day < 7) {
+    if (lastDayOfCurrentMonth != 6 && day < 7) {
         var nextMonthsDates = 1;
         do {
-            this.calendar[week][day] = {date:nextMonthsDates, current:false};
+            this.calendar[week][day] = new DAY({date: nextMonthsDates, month: nextMonth, year: nextMonthYear, current:false});
             nextMonthsDates++;
             day++;
 
@@ -294,13 +325,13 @@ function getId(id) {
  * @param m
  * @returns {number}
  */
-TACAL.prototype.getWeeksInMonth = function() {
-    var year         = this.currYear;
+TACAL.prototype.getWeeksInMonth = function () {
+    var year = this.currYear;
     var month_number = this.currMonth;
     var firstOfMonth = new Date(year, month_number, 1);
-    var lastOfMonth  = new Date(year, month_number+1, 0);
-    var used         = firstOfMonth.getDay() + lastOfMonth.getDate();
-    return Math.ceil( used / 7);
+    var lastOfMonth = new Date(year, month_number + 1, 0);
+    var used = firstOfMonth.getDay() + lastOfMonth.getDate();
+    return Math.ceil(used / 7);
 };
 
 /**
@@ -310,7 +341,7 @@ TACAL.prototype.getWeeksInMonth = function() {
 TACAL.prototype.displayVars = function (event) {
     console.log('* - - - - - - Display Variables: '
         + event
-        +' - - - - - - *');
+        + ' - - - - - - *');
     console.log("Div Id: " + this.divId);
 
     console.log("* - - Day Of Week - - *");
