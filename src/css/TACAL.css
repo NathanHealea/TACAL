@@ -12,8 +12,8 @@
     font-family: Inconsolata, Monaco, 'Andale Mono', monospace;
 }
 
-.calendar-wrapper #btnPrev,
-.calendar-wrapper #btnNext {
+.calendar-wrapper .btnPrev,
+.calendar-wrapper .btnNext {
     background: transparent;
     border: none;
     outline: none;
@@ -23,12 +23,12 @@
     transition: all 0.3s ease;
 }
 
-.calendar-wrapper #btnPrev {
+.calendar-wrapper .btnPrev {
     float: left;
     margin-bottom: 20px;
 }
 
-.calendar-wrapper #btnNext {
+.calendar-wrapper .btnNext {
     float: right;
     margin-bottom: 20px;
 }

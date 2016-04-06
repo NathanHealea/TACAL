@@ -149,6 +149,15 @@ TACAL.prototype.previousMonth = function () {
 TACAL.prototype.showcurr = function () {
     //this.showMonth(this.currYear, this.currMonth);
     this.showMonth();
+    var cal = this;
+    getId(this.divId + 'Next').onclick = function () {
+        cal.nextMonth();
+        cal.displayVars('onClick Next');
+    };
+    getId(this.divId + 'Prev').onclick = function () {
+        cal.previousMonth();
+        cal.displayVars('onClick Prev');
+    }
 };
 
 /**
@@ -157,7 +166,11 @@ TACAL.prototype.showcurr = function () {
 TACAL.prototype.showMonth = function () {
     // --> Start calendar wrapper
     html = '';
+    html += '<div class="calendar-wrapper">';
 
+    html += '<button id="' + this.divId + 'Prev" class="btnPrev" type="button">Prev</button>';
+    html += '<button id="' + this.divId + 'Next" class="btnNext" type="button">Next</button>';
+    html += '<div>';
 
     // --> Start table
     html += '<table>';
