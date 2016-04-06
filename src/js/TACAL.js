@@ -303,6 +303,16 @@ TACAL.prototype.getWeeksInMonth = function() {
     return Math.ceil( used / 7);
 };
 
+TACAL.prototype.getDateId = function(uniqueid, year, month, date){
+    if(uniqueid != null && uniqueid == ' '){
+        return uniqueid + '-' + year + '-' + month + '-' + '-' + date;
+    }
+    else{
+        return year + '-' + month + '-' + '-' + date;
+    }
+
+};
+
 /**
  * Displays tacal variables after an given event
  * @param event
@@ -326,5 +336,8 @@ TACAL.prototype.displayVars = function (event) {
 
     console.log("* - - Calendar Days - - *");
     console.log(this.calendar);
+
+    console.log("* - - Events - - *");
+    console.log(this.events);
 
 };
