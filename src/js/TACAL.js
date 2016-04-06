@@ -51,6 +51,38 @@ var TACAL = function (options) {
 
     this.addDate(this.currYear, this.currMonth);
 };
+var Day = function(options){
+
+    // Calendar information
+    this.month = options;
+    this.year =  null;
+    this.day = null;
+
+    // Events for that day
+    this.event = null;
+
+    // Id for the day
+    this.id = null;
+
+    // css to be applied to day when rendering.
+    this.css = null;
+
+    this.setVariables(options);
+
+};
+
+Day.prototype.setVariables= function(options){
+    if(options == null){
+        return;
+    }
+    var keys = Object.keys(options);
+
+    for(var i in keys){
+        if(this.hasOwnProperty(keys[i])){
+            this[keys[i]]  = options[keys[i]];
+        }
+    }
+};
 
 /**
  * Sets option for TACAL
@@ -218,17 +250,46 @@ TACAL.prototype.addDate = function (y, m) {
     var numberOfDays = new Date(y, m + 1, 0 ).getDate();
     // Last day of the previous month
     var lastDayOfPreviousMonth = 0 ? new Date(y - 1, 11, 0).getDate() : new Date(y, m, 0).getDate();
+
+    var lastMonth = null;
+    var lastMonthYear = null;
+
+    var nextMonth = null;
+    var nextMonthYear = null;
+
+    var options = null;
+
+    // Calculating last month
+    if( m - 1 == 0){
+        lastMonth = 11;
+        lastMonthYear = y -1;
+    }
+    else {
+        lastMonth = m - 1;
+        lastMonthYear = y;
+    }
+
+    // Calculating next month
+    if(m + 1 == 12){
+        nextMonth = 0;
+        nextMonth = y + 1;
+    }
+    else{
+        nextMonth = m + 1;
+        nextMonthYear = y;
+    }
+
     /*
      Filling dates of previous month
      if the first day of the selected month
      is not on Sunday.
      */
-
     if (firstDayOfCurrentMonth != 1) {
         var lastMonthsDates = lastDayOfPreviousMonth - firstDayOfCurrentMonth + 1;
         for (var i = 0; i < firstDayOfCurrentMonth; i++) {
-            this.calendar[week][day] = {date:lastMonthsDates, current:false};
-            lastMonthsDates++;
+            options =  {day:lastMonthsDates,month: lastMonth, year: lastMonthYear};
+            this.calendar[week][day] = new Day(options);
+                lastMonthsDates++;
             day++;
         }
     }
@@ -236,7 +297,9 @@ TACAL.prototype.addDate = function (y, m) {
     // Filling dates of the selected month
     do {
         do {
-            this.calendar[week][day] = {date:date, current:true};
+            //this.calendar[week][day] = {date:date, month: this.currMonth, year: this.currYear, current:true};
+            options =  {day:date,month: this.currMonth, year: this.currYear};
+            this.calendar[week][day] = new Day(options);
             date++;
             day++;
         } while (( day < 7) && ( date < numberOfDays + 1));
@@ -256,7 +319,9 @@ TACAL.prototype.addDate = function (y, m) {
      if (lastDayOfCurrentMonth != 6 && day < 7) {
         var nextMonthsDates = 1;
         do {
-            this.calendar[week][day] = {date:nextMonthsDates, current:false};
+            //this.calendar[week][day] = {date:nextMonthsDates, month: nextMonth, year: nextMonthYear, current:false};
+            options =  {day:nextMonthsDates,month: nextMonth, year: nextMonthYear};
+            this.calendar[week][day] = new Day(options);
             nextMonthsDates++;
             day++;
 
@@ -301,6 +366,10 @@ TACAL.prototype.getWeeksInMonth = function() {
     var lastOfMonth  = new Date(year, month_number+1, 0);
     var used         = firstOfMonth.getDay() + lastOfMonth.getDate();
     return Math.ceil( used / 7);
+};
+
+TACAL.prototype.addEvent = function(date, event){
+
 };
 
 TACAL.prototype.getDateId = function(uniqueid, year, month, date){

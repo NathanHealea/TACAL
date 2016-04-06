@@ -13,21 +13,27 @@ var UnitTest = function (id) {
     this.events = {
         0: {
             title: 'Pass Post',
-            wordcount: 850,
-            is_wordsalad: 0,
-            date: this.today
+            date: '2016-04-12',
+            wordcount: 364,
+            is_wordsalad:0
         },
         1: {
-            title: 'Fail Post',
-            wordcount: 365,
-            is_wordsalad: 1,
-            date: new Date(this.today.getDate + 1)
+            title: 'Pass failed',
+            date: '2016-04-13',
+            wordcount: 407,
+            is_wordsalad:1
         }
     };
 
     this.options = {
         divId: 'divCal',
-        cssClass: 'not-current',
+        cssClass: {
+            notCurrent: 'not-currnet',
+            meet: 'meet',
+            notMeet: 'notMeet',
+            is_Wordsalad: 'isWordsalad',
+            notWordSalad: 'notWordSalad'
+        },
         events: this.events
     };
 
