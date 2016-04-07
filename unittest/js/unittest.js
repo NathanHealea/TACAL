@@ -9,21 +9,23 @@
 var UnitTest = function (id) {
 
     this.today = new Date();
-    /* Events for passing */
-    this.events = {
-        0: {
-            title: 'Pass Post',
-            date: '2016-03-12',
-            wordcount: 364,
-            is_wordsalad:0
-        },
-        1: {
-            title: 'Pass failed',
-            date: '2016-03-13',
-            wordcount: 407,
-            is_wordsalad:1
-        }
-    };
+
+    var date =
+        /* Events for passing */
+        this.events = {
+            0: {
+                title: 'Pass Post',
+                date: formatDate(this.today.getFullYear(), this.today.getMonth(), this.today.getDate()),
+                wordcount: 364,
+                is_wordsalad: 0
+            },
+            1: {
+                title: 'Pass failed',
+                date: formatDate(this.today.getFullYear(), this.today.getMonth(), this.today.getDate() + 1),
+                wordcount: 407,
+                is_wordsalad: 1
+            }
+        };
 
     this.options = {
         divId: 'cal1',
@@ -56,7 +58,7 @@ var UnitTest = function (id) {
     cal2.showcurr();
 
     // Bind next and previous button clicks
-    
+
 
 };
 /**
@@ -343,7 +345,7 @@ UnitTest.prototype.testAddDates = function () {
     var test = "testAddDates";
 
     // Arrange
-    var expected = buildCalendar(new Date().getFullYear(), new Date().getMonth());
+    var expected = new TACAL(this.options);
     var actual;
 
     // Act
@@ -356,7 +358,7 @@ UnitTest.prototype.testAddDates = function () {
             actual = cal.calendar[i][j].date;
 
             // Assert
-            if (expected[counter].date != actual) {
+            if (expected.calendar[i][j].date != actual) {
                 this.DisplayFail(test, expected, actual);
                 return;
             }
@@ -379,8 +381,8 @@ UnitTest.prototype.testDateIdentifier = function () {
 
     // Act
     var cal = new TACAL(this.options);
-    for(var i = 0; i < cal.calendar.length; i++ ){
-        for(var j = 0; j < cal.calendar[i].length; j++){
+    for (var i = 0; i < cal.calendar.length; i++) {
+        for (var j = 0; j < cal.calendar[i].length; j++) {
             actual = cal.calendar[i][j].id;
 
             // Appends a 0 if less then 10
@@ -415,97 +417,11 @@ function isNUll(obj) {
 
 };
 
-function buildCalendar(y, m){
-    // Day of the week (ex: 0 = sun)
-    var day = 0;
-    // Indexer for the week we are adding dates to
-    var week = 0;
-    // Holds the current date being added (for current month)
-    var date = 1;
-    // Starting day of the current month
-    var firstDayOfCurrentMonth = new Date(y, m, 1).getDay();
-    // Last day of the current month
-    var lastDayOfCurrentMonth = new Date(y, m + 1, 0).getDay();
-    // Number of days in the current month (ex: july = 31)
-    var numberOfDays = new Date(y, m + 1, 0 ).getDate();
-    // Last day of the previous month
-    var lastDayOfPreviousMonth = 0 ? new Date(y - 1, 11, 0).getDate() : new Date(y, m, 0).getDate();
+function formatDate(y, m, d) {
+    var month = ((m < 10) ? '0' + m : m);
+    var date = ((d < 10) ? '0' + d : d);
 
-    // last month
-    var lastMonth = null;
-    var lastMonthYear = null;
-
-    // next month
-    var nextMonth = null;
-    var nextMonthYear = null;
-
-    if( (m-1) == -1){
-        lastMonth = 11;
-        lastMonthYear = y - 1;
-    }
-    else{
-        lastMonth = m - 1;
-        lastMonthYear = y;
-    }
-
-    if( (m + 1) == 12){
-        nextMonth = 0;
-        nextMonthYear = y + 1;
-    }
-    else{
-        nextMonth = m + 1;
-        nextMonthYear = y;
-    }
-
-
-    // temp calendar what will hold all the dates.
-    var calendar = [];
-
-    if (firstDayOfCurrentMonth != 1) {
-        var lastMonthsDates = lastDayOfPreviousMonth - firstDayOfCurrentMonth + 1;
-        for (var i = 0; i < firstDayOfCurrentMonth; i++) {
-            calendar.push({
-                date:lastMonthsDates,
-                month: lastMonth,
-                year: lastMonthYear,
-                current:false});
-            lastMonthsDates++;
-            day++;
-        }
-    }
-
-    // Filling dates of the selected month
-    do {
-            calendar.push({
-                date:date,
-                month: m,
-                year: y,
-                current:true});
-            date++;
-            day++;
-    } while ( date < numberOfDays + 1);
-
-    /*
-     Filling dates of next month
-     if the last day of the selected month
-     is not on Saturday.
-     */
-    if (lastDayOfCurrentMonth != 6 && day < 7) {
-        var nextMonthsDates = 1;
-        do {
-            calendar.push({
-                date:nextMonthsDates,
-                month: nextMonth,
-                year: nextMonthYear,
-                current:false});
-            nextMonthsDates++;
-            day++;
-
-        } while (day < 7);
-    }
-    console.log(calendar);
-    return calendar;
-
+    return y + '-' + month + '-' + date;
 }
 
 
