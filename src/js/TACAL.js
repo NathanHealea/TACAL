@@ -9,7 +9,7 @@
 
 /**
  * Constructor for TACAL
- * @param divId
+ * @param id
  * @constructor
  */
 var TACAL = function (args) {
@@ -19,6 +19,17 @@ var TACAL = function (args) {
 
     // Months, stating on January
     this.Months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+    // Default options
+    this.default = {
+        id: 'cal',
+        css: {
+            current: 'current',
+            not: 'not-current',
+            event: 'event'
+
+        }
+    };
 
     // Set the current month, year
     var d = new Date();
@@ -32,10 +43,11 @@ var TACAL = function (args) {
     // this allows us to add more information to be display in the calendar.
     this.calendar = this.init();
 
-
     /* * * Variables * * */
     // Store div id
-    this.divId = null;
+    this.id = null;
+
+    this.event = null;
 
 
     // sets variables;
@@ -43,9 +55,10 @@ var TACAL = function (args) {
 
     // add dates to calendar.
     this.addDate(this.currYear, this.currMonth);
-    if (args != null && args.event != null) {
-        this.addEvent(args.event);
-    }
+    this.addEvent();
+    /*if (args != null && args.event != null) {
+     this.addEvent(args.event);
+     }*/
 };
 
 var DAY = function (args) {
@@ -90,10 +103,7 @@ var DAY = function (args) {
  */
 TACAL.prototype.setVariables = function (options) {
     if (options == null) {
-        options = {
-            divId: 'divCal',
-            cssClass: 'not-current'
-        }
+        options = this.default;
     }
     var keys = Object.keys(options);
 
@@ -102,6 +112,21 @@ TACAL.prototype.setVariables = function (options) {
             this[keys[i]] = options[keys[i]];
         }
     }
+};
+
+/**
+ * Calculates the number of weeks in a month
+ * @param y
+ * @param m
+ * @returns {number}
+ */
+TACAL.prototype.getWeeksInMonth = function () {
+    var year = this.currYear;
+    var month_number = this.currMonth;
+    var firstOfMonth = new Date(year, month_number, 1);
+    var lastOfMonth = new Date(year, month_number + 1, 0);
+    var used = firstOfMonth.getDay() + lastOfMonth.getDate();
+    return Math.ceil(used / 7);
 };
 
 /**
@@ -132,6 +157,7 @@ TACAL.prototype.nextMonth = function () {
     this.currWeeks = this.getWeeksInMonth();
     this.calendar = this.init();
     this.addDate(this.currYear, this.currMonth);
+    this.addEvent();
     this.showcurr();
 
 };
@@ -149,6 +175,7 @@ TACAL.prototype.previousMonth = function () {
     }
 
     this.addDate(this.currYear, this.currMonth);
+    this.addEvent();
     this.showcurr();
 };
 
@@ -159,11 +186,11 @@ TACAL.prototype.showcurr = function () {
     //this.showMonth(this.currYear, this.currMonth);
     this.showMonth();
     var cal = this;
-    getId(this.divId + 'Next').onclick = function () {
+    getId(this.id + 'Next').onclick = function () {
         cal.nextMonth();
         cal.displayVars('onClick Next');
     };
-    getId(this.divId + 'Prev').onclick = function () {
+    getId(this.id + 'Prev').onclick = function () {
         cal.previousMonth();
         cal.displayVars('onClick Prev');
     }
@@ -177,8 +204,8 @@ TACAL.prototype.showMonth = function () {
     html = '';
     html += '<div class="calendar-wrapper">';
 
-    html += '<button id="' + this.divId + 'Prev" class="btnPrev" type="button">Prev</button>';
-    html += '<button id="' + this.divId + 'Next" class="btnNext" type="button">Next</button>';
+    html += '<button id="' + this.id + 'Prev" class="btnPrev" type="button">Prev</button>';
+    html += '<button id="' + this.id + 'Next" class="btnNext" type="button">Next</button>';
     html += '<div>';
 
     // --> Start table
@@ -214,17 +241,19 @@ TACAL.prototype.showMonth = function () {
         // --> Start table row
         html += '<tr>';
         for (var col = 0; col < this.calendar[row].length; col++) {
-            if (this.calendar[row][col].current != true) {
 
-                html += '<td class="not-current">'
-                    + this.calendar[row][col].date
-                    + '</td>';
-            }
-            else {
-                html += '<td>'
-                    + this.calendar[row][col].date
-                    + '</td>';
-            }
+            html += this.renderDate(this.calendar[row][col]);
+            /*if (this.calendar[row][col].current != true) {
+
+             html += '<td class="not-current">'
+             + this.calendar[row][col].date
+             + '</td>';
+             }
+             else {
+             html += '<td>'
+             + this.calendar[row][col].date
+             + '</td>';
+             }*/
         }
         html += '</tr>';
         // <-- End table row
@@ -239,7 +268,7 @@ TACAL.prototype.showMonth = function () {
     // <-- End calendar wrapper
 
     // Write HTML to the div
-    document.getElementById(this.divId).innerHTML = html;
+    document.getElementById(this.id).innerHTML = html;
 };
 
 /**
@@ -327,7 +356,66 @@ TACAL.prototype.addDate = function (y, m) {
     }
 };
 
+/**
+ * Add events to the calender giving mating dates.
+ */
+TACAL.prototype.addEvent = function () {
+    if (this.event != null) {
+        var isAdded = false;
+        for (var e in this.event) {
+            if (this.event[e].hasOwnProperty('date')) {
+                for (var w in this.calendar) {
+                    for (var d in this.calendar[w]) {
+                        if (this.calendar[w][d].id.localeCompare(this.event[e].date) == 0) {
+                            this.calendar[w][d].event = this.event[e];
+                            isAdded = true;
+                            break;
+                        }
+                    }
+                    if (isAdded == true) {
+                        isAdded = false;
+                        break;
+                    }
+                }
+            }
 
+        }
+    }
+
+};
+
+TACAL.prototype.renderDate = function (date) {
+
+    var keys = Object.keys(date);
+    console.log(keys);
+    var css = '';
+    var id = date.id;
+    var innerhtml = date.date;
+
+
+    // Applies css: not current month
+    if (keys.indexOf("current") != -1) {
+        if (date[keys[keys.indexOf("current")]] == false) {
+            css += 'not-current '
+        }
+    }
+
+    // Applies css: event on date
+    if (keys.indexOf("event") != -1) {
+        if (date[keys[keys.indexOf("event")]] != null) {
+            css += 'event '
+        }
+
+    }
+
+
+    return '<td class="' + css + '" id="' + id + '">' + innerhtml + '</td>';
+
+
+};
+
+
+// ------  Helper functions ------ //
 /**
  * Get element by id
  * @param id
@@ -337,45 +425,7 @@ function getId(id) {
     return document.getElementById(id);
 }
 
-/**
- * Calculates the number of weeks in a month
- * @param y
- * @param m
- * @returns {number}
- */
-TACAL.prototype.getWeeksInMonth = function () {
-    var year = this.currYear;
-    var month_number = this.currMonth;
-    var firstOfMonth = new Date(year, month_number, 1);
-    var lastOfMonth = new Date(year, month_number + 1, 0);
-    var used = firstOfMonth.getDay() + lastOfMonth.getDate();
-    return Math.ceil(used / 7);
-};
-
-TACAL.prototype.addEvent = function (event) {
-    var isAdded = false;
-    for (var e in event) {
-        if (event[e].hasOwnProperty('date')) {
-            for (var w in this.calendar) {
-                for (var d in this.calendar[w]) {
-                    if (this.calendar[w][d].id.localeCompare(event[e].date) == 0) {
-                        this.calendar[w][d].event = event[e];
-                        isAdded = true;
-                        break;
-                    }
-                }
-                if (isAdded == true) {
-                    isAdded = false;
-                    break;
-                }
-            }
-        }
-
-    }
-
-
-};
-
+// ------  Testing ------ //
 /**
  * Displays tacal variables after an given event
  * @param event
@@ -384,7 +434,7 @@ TACAL.prototype.displayVars = function (event) {
     console.log('* - - - - - - Display Variables: '
         + event
         + ' - - - - - - *');
-    console.log("Div Id: " + this.divId);
+    console.log("Div Id: " + this.id);
 
     console.log("* - - Day Of Week - - *");
     console.log(this.DaysOfWeek);

@@ -28,11 +28,11 @@ var UnitTest = function (id) {
         };
 
     this.options = {
-        divId: 'cal1',
+        id: 'cal1',
         event: this.events
     };
     this.optionsTwo = {
-        divId: 'cal2'
+        id: 'cal2'
     };
 
 
@@ -112,7 +112,7 @@ UnitTest.prototype.testInitialization = function () {
 
     // Arrange
     var expected = false;
-    /*var expectedDivId = this.options.divId;*/
+    /*var expectedDivId = this.options.id;*/
     var expectedDivId = 'divCal';
     var actualCal;
     var actualCal2;
@@ -122,10 +122,10 @@ UnitTest.prototype.testInitialization = function () {
     var cal = new TACAL(this.options);
     actualCal = isNUll(cal);
     var cal2 = new TACAL({
-        divId: 'divCal'
+        id: 'divCal'
     });
     actualCal2 = isNUll(cal2);
-    actualDivId = cal2.divId;
+    actualDivId = cal2.id;
 
 
     // Assert
@@ -403,6 +403,11 @@ UnitTest.prototype.testDateIdentifier = function () {
     this.DisplayPass(test);
 };
 
+/**
+ * Determins of a object is empty
+ * @param obj
+ * @returns {boolean}
+ */
 function isNUll(obj) {
     if (obj === undefined) {
         return true;
@@ -415,8 +420,15 @@ function isNUll(obj) {
     }
     return false;
 
-};
+}
 
+/**
+ * formats a year month date
+ * @param y (year)
+ * @param m (month)
+ * @param d (date)
+ * @returns {string} (yyyy-mm-dd)
+ */
 function formatDate(y, m, d) {
     var month = ((m < 10) ? '0' + m : m);
     var date = ((d < 10) ? '0' + d : d);

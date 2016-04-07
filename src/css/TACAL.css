@@ -55,6 +55,29 @@ thead td {
 tbody tr.days {
     font-weight: bold;
 }
+
 tbody tr td.not-current{
     color:#c0c0c0;
+}
+
+tbody tr td.not-current{
+    color:#c0c0c0;
+}
+
+tbody tr td.event {
+    cursor: pointer;
+    position: relative;
+}
+
+tbody tr td.event:after {
+    background: #00addf;
+    border-radius: 50%;
+    bottom: .5em;
+    display: block;
+    content: '';
+    height: .5em;
+    left: 50%;
+    margin: -.25em 0 0 -.25em;
+    position: absolute;
+    width: .5em;
 }
