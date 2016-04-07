@@ -242,18 +242,8 @@ TACAL.prototype.showMonth = function () {
         html += '<tr>';
         for (var col = 0; col < this.calendar[row].length; col++) {
 
+            // Render date based on storeded information.
             html += this.renderDate(this.calendar[row][col]);
-            /*if (this.calendar[row][col].current != true) {
-
-             html += '<td class="not-current">'
-             + this.calendar[row][col].date
-             + '</td>';
-             }
-             else {
-             html += '<td>'
-             + this.calendar[row][col].date
-             + '</td>';
-             }*/
         }
         html += '</tr>';
         // <-- End table row
