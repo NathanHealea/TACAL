@@ -43,6 +43,9 @@ var TACAL = function (args) {
 
     // add dates to calendar.
     this.addDate(this.currYear, this.currMonth);
+    if (args != null && args.event != null) {
+        this.addEvent(args.event);
+    }
 };
 
 var DAY = function (args) {
@@ -62,6 +65,8 @@ var DAY = function (args) {
     // is it the current month
     this.current = null;
 
+    this.event = null;
+
     // set the date, month, year if passed arguments.
     if (args != null) {
         var keys = Object.keys(args);
@@ -71,7 +76,11 @@ var DAY = function (args) {
             }
         }
 
-        this.id = this.year + '-' + this.month + '-' + this.date;
+        var month = ((this.month < 10) ? '0' + this.month : this.month);
+        var date = ((this.date < 10) ? '0' + this.date : this.date);
+
+        this.id = this.year + '-' + month + '-' + date;
+
     }
 };
 
@@ -271,7 +280,12 @@ TACAL.prototype.addDate = function (y, m) {
     if (firstDayOfCurrentMonth != 1) {
         var lastMonthsDates = lastDayOfPreviousMonth - firstDayOfCurrentMonth + 1;
         for (var i = 0; i < firstDayOfCurrentMonth; i++) {
-            this.calendar[week][day] = new DAY({date: lastMonthsDates, month: lastMonth, year: lastMonthYear, current:false});
+            this.calendar[week][day] = new DAY({
+                date: lastMonthsDates,
+                month: lastMonth,
+                year: lastMonthYear,
+                current: false
+            });
             lastMonthsDates++;
             day++;
         }
@@ -280,7 +294,7 @@ TACAL.prototype.addDate = function (y, m) {
     // Filling dates of the selected month
     do {
         do {
-            this.calendar[week][day] = new DAY({date: date, month: this.currMonth, year: this.currYear, current:true});
+            this.calendar[week][day] = new DAY({date: date, month: this.currMonth, year: this.currYear, current: true});
             date++;
             day++;
         } while (( day < 7) && ( date < numberOfDays + 1));
@@ -300,7 +314,12 @@ TACAL.prototype.addDate = function (y, m) {
     if (lastDayOfCurrentMonth != 6 && day < 7) {
         var nextMonthsDates = 1;
         do {
-            this.calendar[week][day] = new DAY({date: nextMonthsDates, month: nextMonth, year: nextMonthYear, current:false});
+            this.calendar[week][day] = new DAY({
+                date: nextMonthsDates,
+                month: nextMonth,
+                year: nextMonthYear,
+                current: false
+            });
             nextMonthsDates++;
             day++;
 
@@ -333,17 +352,27 @@ TACAL.prototype.getWeeksInMonth = function () {
     return Math.ceil(used / 7);
 };
 
-TACAL.prototype.addEvent = function(date, event){
+TACAL.prototype.addEvent = function (event) {
+    var isAdded = false;
+    for (var e in event) {
+        if (event[e].hasOwnProperty('date')) {
+            for (var w in this.calendar) {
+                for (var d in this.calendar[w]) {
+                    if (this.calendar[w][d].id.localeCompare(event[e].date) == 0) {
+                        this.calendar[w][d].event = event[e];
+                        isAdded = true;
+                        break;
+                    }
+                }
+                if (isAdded == true) {
+                    isAdded = false;
+                    break;
+                }
+            }
+        }
 
-};
+    }
 
-TACAL.prototype.getDateId = function(uniqueid, year, month, date){
-    if(uniqueid != null && uniqueid == ' '){
-        return uniqueid + '-' + year + '-' + month + '-' + '-' + date;
-    }
-    else{
-        return year + '-' + month + '-' + '-' + date;
-    }
 
 };
 
