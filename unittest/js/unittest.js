@@ -26,7 +26,8 @@ var UnitTest = function (id) {
     };
 
     this.options = {
-        divId: 'cal1'
+        divId: 'cal1',
+        event: this.events
     };
     this.optionsTwo = {
         divId: 'cal2'
@@ -373,18 +374,25 @@ UnitTest.prototype.testDateIdentifier = function () {
     var test = "testDateIdentifier";
 
     // Arrange
-    var expected = buildCalendar(new Date().getFullYear(), new Date().getMonth());
+    var expected;
     var actual;
 
     // Act
-    actual = false;
-
-
-    // Assert
-    if (expected != actual) {
-        this.DisplayFail(test, expected, actual);
-        return;
+    var cal = new TACAL(this.options);
+    for(var i = 0; i < cal.calendar.length; i++ ){
+        for(var j = 0; j < cal.calendar[i].length; j++){
+            actual = cal.calendar[i][j].id;
+            expected = cal.calendar[i][j].year + '-' + cal.calendar[i][j].month + '-' + cal.calendar[i][j].date;
+            // Assert
+            if (expected != actual) {
+                this.DisplayFail(test, expected, actual);
+                return;
+            }
+        }
     }
+
+
+
 
 
     this.DisplayPass(test);
