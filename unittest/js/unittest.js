@@ -382,7 +382,14 @@ UnitTest.prototype.testDateIdentifier = function () {
     for(var i = 0; i < cal.calendar.length; i++ ){
         for(var j = 0; j < cal.calendar[i].length; j++){
             actual = cal.calendar[i][j].id;
-            expected = cal.calendar[i][j].year + '-' + cal.calendar[i][j].month + '-' + cal.calendar[i][j].date;
+
+            // Appends a 0 if less then 10
+            var month = ((cal.calendar[i][j].month < 10) ? '0' + cal.calendar[i][j].month : cal.calendar[i][j].month);
+
+            // Appends a 0 if less then 10
+            var date = ((cal.calendar[i][j].date < 10) ? '0' + cal.calendar[i][j].date : cal.calendar[i][j].date);
+
+            expected = cal.calendar[i][j].year + '-' + month + '-' + date;
             // Assert
             if (expected != actual) {
                 this.DisplayFail(test, expected, actual);
@@ -390,10 +397,6 @@ UnitTest.prototype.testDateIdentifier = function () {
             }
         }
     }
-
-
-
-
 
     this.DisplayPass(test);
 };
