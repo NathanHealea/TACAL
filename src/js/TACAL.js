@@ -295,12 +295,20 @@ TACAL.prototype.addDate = function (y, m) {
     // Previous month year
     var nextMonthYear = (( m + 1 > 11) ? y + 1 : y );
 
+ /*   if(m == 1){
+        if(((y % 4 == 0) && (y % 100 != 0)) || (y % 400 == 0)){
+            numberOfDays == 28;
+        }
+        else{
+            numberOfDays == 29;
+        }
+    }*/
     /*
      Filling dates of previous month
      if the first day of the selected month
      is not on Sunday.
      */
-    if (firstDayOfCurrentMonth != 1) {
+    if (firstDayOfCurrentMonth != 0 ) {
         var lastMonthsDates = lastDayOfPreviousMonth - firstDayOfCurrentMonth + 1;
         for (var i = 0; i < firstDayOfCurrentMonth; i++) {
             this.calendar[week][day] = new DAY({
