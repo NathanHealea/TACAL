@@ -9,23 +9,21 @@
 var UnitTest = function (id) {
 
     this.today = new Date();
-
-    var date =
-        /* Events for passing */
-        this.events = {
-            0: {
-                title: 'Pass Post',
-                date: formatDate(this.today.getFullYear(), this.today.getMonth(), this.today.getDate()),
-                wordcount: 364,
-                is_wordsalad: 0
-            },
-            1: {
-                title: 'Pass failed',
-                date: formatDate(this.today.getFullYear(), this.today.getMonth(), this.today.getDate() + 1),
-                wordcount: 407,
-                is_wordsalad: 1
-            }
-        };
+    /* Events for passing */
+    this.events = {
+        0: {
+            title: 'Pass Post',
+            date: formatDate(this.today.getFullYear(), this.today.getMonth(), this.today.getDate()),
+            wordcount: 364,
+            is_wordsalad: 0
+        },
+        1: {
+            title: 'Pass failed',
+            date: formatDate(this.today.getFullYear(), this.today.getMonth(), this.today.getDate() + 1),
+            wordcount: 407,
+            is_wordsalad: 1
+        }
+    };
 
     this.options = {
         id: 'cal1',

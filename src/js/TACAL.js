@@ -204,9 +204,9 @@ TACAL.prototype.showMonth = function () {
     html = '';
     html += '<div class="calendar-wrapper">';
 
-    html += '<button id="' + this.id + 'Prev" class="btnPrev" type="button">Prev</button>';
+    /*html += '<button id="' + this.id + 'Prev" class="btnPrev" type="button">Prev</button>';
     html += '<button id="' + this.id + 'Next" class="btnNext" type="button">Next</button>';
-    html += '<div>';
+    html += '<div>';*/
 
     // --> Start table
     html += '<table>';
@@ -216,8 +216,12 @@ TACAL.prototype.showMonth = function () {
 
     // --> Start row
     html += '<tr>';
+    html += '<td id="' + this.id + 'Prev" class="btnPrev" type="button">&#60;</td>';
+
     // --> Write selected month and year
-    html += '<td colspan="7">' + this.Months[this.currMonth] + ' ' + this.currYear + '</td>';
+    html += '<td colspan="5">' + this.Months[this.currMonth] + ' ' + this.currYear + '</td>';
+
+    html += '<td id="' + this.id + 'Next" class="btnNext" type="button">&#62;</td>';
     html += '</tr>';
     // <--  End row
 
@@ -381,6 +385,7 @@ TACAL.prototype.renderDate = function (date) {
     var css = '';
     var id = date.id;
     var innerhtml = date.date;
+    var event = '';
 
 
     // Applies css: not current month
@@ -391,16 +396,45 @@ TACAL.prototype.renderDate = function (date) {
     }
 
     // Applies css: event on date
-    if (keys.indexOf("event") != -1) {
+ /*   if (keys.indexOf("event") != -1) {
         if (date[keys[keys.indexOf("event")]] != null) {
             css += 'event '
         }
 
+    }*/
+
+    // check for an event on the day.
+    if(keys.indexOf('event') != -1 && date.event != null){
+
+        // Applies css: for wordcount of student post. 
+        if(date['event'].hasOwnProperty('wordcount')){
+
+            if(date['event'].wordcount < 349){
+                event += '<div class="low"></div>';
+            }
+            else if(date['event'].wordcount >= 349 && date['event'].wordcount < 370 ){
+                event += '<div class="medium"></div>';
+            }
+            else if(date['event'].wordcount >= 370){
+                event += '<div class="high"></div>';
+            }
+
+        }
+
+        // Applies css: for is_wordsalad of a student post
+
+        if(date['event'].hasOwnProperty('is_wordsalad')){
+            if(date['event'].is_wordsalad == 1){
+                event += '<div class="iswordsalad"></div>';
+            }
+            else if(date['event'].is_wordsalad == 0){
+                event += '<div class="notwordsalad"></div>';
+            }
+        }
+
     }
 
-
-    return '<td class="' + css + '" id="' + id + '">' + innerhtml + '</td>';
-
+    return '<td class="' + css + '" id="' + id + '">' + innerhtml  + event + '</td>';
 
 };
 

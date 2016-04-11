@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>TACAL - Demo</title>
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lato:300,400,700">
     <link href="../src/css/tac.css" rel="stylesheet" type="text/css">
     <link href="../src/css/tacal.css" rel="stylesheet" type="text/css">
     <link href="css/demo.css" rel="stylesheet" type="text/css">
@@ -13,12 +14,10 @@
             <h1 class="title">Technology Across the Curriculum Calendar</h1>
             <h2 class="title">Demo</h2>
         </header>
-        <section id="cal1">
+        <section>
             <h3 class="title">basic view</h3>
-            <div class="calendar-wrapper">
-                <button id="btnPrev" type="button">Prev</button>
-                <button id="btnNext" type="button">Next</button>
-                <div id="clndr"></div>
+            <div id="cal1">
+
             </div>
         </section>
     </div>
@@ -27,20 +26,36 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.1/jquery.min.js"></script>
     <script src="../src/js/tacal.js" rel="script"></script>
     <script>
-        var options = {
-            divId:'clndr',
-            cssClass: 'not-current'
-        };
-        var cal = new TACAL(options);
-        cal.showcurr();
+        function formatDate(y, m, d) {
+            var month = ((m < 10) ? '0' + m : m);
+            var date = ((d < 10) ? '0' + d : d);
 
-        // Bind next and previous button clicks
-        getId('btnNext').onclick = function () {
-            cal.nextMonth();
-        };
-        getId('btnPrev').onclick = function () {
-            cal.previousMonth();
+            return y + '-' + month + '-' + date;
         }
+        this.today = new Date();
+        /* Events for passing */
+        this.events = {
+            0: {
+                title: 'Pass Post',
+                date: formatDate(this.today.getFullYear(), this.today.getMonth(), this.today.getDate()),
+                wordcount: 364,
+                is_wordsalad: 0
+            },
+            1: {
+                title: 'Pass failed',
+                date: formatDate(this.today.getFullYear(), this.today.getMonth(), this.today.getDate() + 1),
+                wordcount: 407,
+                is_wordsalad: 1
+            }
+        };
+
+        this.options = {
+            id: 'cal1',
+            event: this.events
+        };
+
+        var cal = new TACAL(this.options);
+        cal.showcurr();
     </script>
 </body>
 </html>
