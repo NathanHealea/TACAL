@@ -173,7 +173,8 @@ TACAL.prototype.previousMonth = function () {
     else {
         this.currMonth = this.currMonth - 1;
     }
-
+    this.currWeeks = this.getWeeksInMonth();
+    this.calendar = this.init();
     this.addDate(this.currYear, this.currMonth);
     this.addEvent();
     this.showcurr();
