@@ -419,19 +419,18 @@ TACAL.prototype.renderDate = function (date) {
         if(date['event'].hasOwnProperty('wordcount')){
 
             if(date['event'].wordcount < 349){
-                event += '<div class="low"></div>';
+                event += '<div class="low">' + date['event'].wordcount + '</div>';
             }
             else if(date['event'].wordcount >= 349 && date['event'].wordcount < 370 ){
-                event += '<div class="medium"></div>';
+                event += '<div class="medium">' + date['event'].wordcount + '</div>';
             }
             else if(date['event'].wordcount >= 370){
-                event += '<div class="high"></div>';
+                event += '<div class="high">' + date['event'].wordcount + '</div>';
             }
 
         }
 
         // Applies css: for is_wordsalad of a student post
-
         if(date['event'].hasOwnProperty('is_wordsalad')){
             if(date['event'].is_wordsalad == 1){
                 event += '<div class="iswordsalad"></div>';
@@ -443,7 +442,10 @@ TACAL.prototype.renderDate = function (date) {
 
     }
 
-    return '<td class="' + css + '" id="' + id + '">' + innerhtml  + event + '</td>';
+    return '<td class="' + css + '" id="' + id + '">'
+        + '<div class="date">' + innerhtml + '</div>'
+        + event
+        + '</td>';
 
 };
 
