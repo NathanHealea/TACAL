@@ -158,7 +158,7 @@ TACAL.prototype.nextMonth = function () {
     this.calendar = this.init();
     this.addDate(this.currYear, this.currMonth);
     this.addEvent();
-    this.showcurr();
+    this.fullMonth();
 
 };
 
@@ -177,13 +177,13 @@ TACAL.prototype.previousMonth = function () {
     this.calendar = this.init();
     this.addDate(this.currYear, this.currMonth);
     this.addEvent();
-    this.showcurr();
+    this.fullMonth();
 };
 
 /**
- * Show current month
+ * Show full Month
  */
-TACAL.prototype.showcurr = function () {
+TACAL.prototype.fullMonth = function () {
     //this.showMonth(this.currYear, this.currMonth);
     this.showMonth();
     var cal = this;

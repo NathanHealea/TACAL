@@ -20,6 +20,12 @@
 
             </div>
         </section>
+        <section>
+            <h3 class="title">liner view</h3>
+            <div id="cal2">
+
+            </div>
+        </section>
     </div>
 
     <!-- JavaScript Loading !-->
@@ -54,8 +60,16 @@
             event: this.events
         };
 
+        this.optionsTwo = {
+            id: 'cal2',
+            event: this.events
+        };
+
         var cal = new TACAL(this.options);
-        cal.showcurr();
+        cal.fullMonth();
+
+        var cal2 = new TACAL(this.optionsTwo);
+        cal2.fullMonth();
     </script>
 </body>
 </html>

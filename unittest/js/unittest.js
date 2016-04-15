@@ -49,11 +49,11 @@ var UnitTest = function (id) {
     this.testDateIdentifier();
 
     var cal1 = new TACAL(this.options);
-    cal1.showcurr();
+    cal1.fullMonth();
     cal1.displayVars('Initialization');
 
     var cal2 = new TACAL(this.optionsTwo);
-    cal2.showcurr();
+    cal2.fullMonth();
 
     // Bind next and previous button clicks
 
