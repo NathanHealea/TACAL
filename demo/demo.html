@@ -21,7 +21,7 @@
             </div>
         </section>
         <section>
-            <h3 class="title">liner view</h3>
+            <h3 class="title">linear view</h3>
             <div id="cal2">
 
             </div>
@@ -31,6 +31,7 @@
     <!-- JavaScript Loading !-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.1/jquery.min.js"></script>
     <script src="../src/js/tacal.js" rel="script"></script>
+    <script src="../src/js/tacal.linear.js" rel="script"></script>
     <script>
         function formatDate(y, m, d) {
             var month = ((m < 10) ? '0' + m : m);
@@ -69,7 +70,7 @@
         cal.fullMonth();
 
         var cal2 = new TACAL(this.optionsTwo);
-        cal2.fullMonth();
+        cal2.linearMonth();
     </script>
 </body>
 </html>
