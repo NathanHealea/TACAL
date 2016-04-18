@@ -302,16 +302,58 @@ TACAL.prototype.showFullMonth = function () {
  * Displays the number of number of months in a linear view
  * @param numMonths
  */
-TACAL.prototype.linearMonth = function () {
-    this.showLinerMonth();
+TACAL.prototype.linearMonth = function (begYear, begMonth, endYear, endMonth) {
+    var monthsCal = [];
+    var count = 0;
+
+    if((begMonth != null && endMonth != null)){
+        for(var m = begMonth; m < endMonth; m++){
+
+            this.currMonth = m;
+            this.currYear = begYear;
+
+            // Gets then number of weeks in the new month
+            this.currWeeks = this.getWeeksInMonth();
+
+            // Initialize the new calender
+            this.calendar = this.init();
+
+            // Adds dates to the calender
+            this.addDate(this.currYear, this.currMonth);
+
+            // Adds events to the calender
+            this.addEvent();
+
+            var ms = {
+                month: m,
+                year: begYear,
+                calendar: this.calendar
+            };
+
+            monthsCal[count] = ms;
+            count++;
+        }
+        this.showLinerMonth(monthsCal);
+
+
+
+    }
+
+    console.log(monthsCal);
+
+
+
+
+
+
 
 };
 
 /**
  * Displays the calendar in a linear view
  */
-TACAL.prototype.showLinerMonth = function () {
-    var numDays = 1;
+TACAL.prototype.showLinerMonth = function (monthsCal) {
+
     var html = '';
 
     // --> Start calendar wrapper
@@ -345,28 +387,30 @@ TACAL.prototype.showLinerMonth = function () {
     html += '<tr>';
 
     // Showing the name of the month
-    html += '<td>' + this.Months[this.currMonth] + '</td>';
 
-    for (var row = 0; row < this.calendar.length; row++) {
-        for (var col = 0; col < this.calendar[row].length; col++) {
-            if (this.calendar[row][col].current == true) {
-                // Render date based on stored information.
-                html += this.renderDate(this.calendar[row][col], 0);
-                numDays++;
-                console.log(numDays);
+    for(var month = 0; month < monthsCal.length; month++) {
+        html += '<td>' + this.Months[monthsCal[month].month] + '</td>';
+        var numDays = 1;
+        for (var row = 0; row < monthsCal[month].calendar.length; row++) {
+            for (var col = 0; col < monthsCal[month].calendar[row].length; col++) {
+                if (monthsCal[month].calendar[row][col].current == true) {
+                    // Render date based on stored information.
+                    html += this.renderDate(monthsCal[month].calendar[row][col], 0);
+                    numDays++;
+                }
             }
         }
-    }
 
-    if (numDays < 32) {
-        for (var d = numDays; d < 32; d++) {
-            html += '<td class="not-current"></td>';
+        if (numDays < 32) {
+            for (var d = numDays; d < 32; d++) {
+                html += '<td class="not-current"></td>';
+            }
         }
+
+
+        html += '</tr>';
+        // <-- End table row
     }
-
-
-    html += '</tr>';
-    // <-- End table row
 
     html += '</tbody>';
     // <-- End body

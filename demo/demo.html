@@ -31,7 +31,6 @@
     <!-- JavaScript Loading !-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.1/jquery.min.js"></script>
     <script src="../src/js/tacal.js" rel="script"></script>
-    <script src="../src/js/tacal.linear.js" rel="script"></script>
     <script>
         function formatDate(y, m, d) {
             var month = ((m < 10) ? '0' + m : m);
@@ -70,7 +69,7 @@
         cal.fullMonth();
 
         var cal2 = new TACAL(this.optionsTwo);
-        cal2.linearMonth();
+        cal2.linearMonth(2016, 2, 2016, 6);
     </script>
 </body>
 </html>
