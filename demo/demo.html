@@ -21,8 +21,20 @@
             </div>
         </section>
         <section>
-            <h3 class="title">linear view</h3>
+            <h3 class="title">linear view: no year</h3>
             <div id="cal2">
+
+            </div>
+        </section>
+        <section>
+            <h3 class="title">linear view: same year</h3>
+            <div id="cal3">
+
+            </div>
+        </section>
+        <section>
+            <h3 class="title">linear view: different years</h3>
+            <div id="cal4">
 
             </div>
         </section>
@@ -32,44 +44,111 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.1/jquery.min.js"></script>
     <script src="../src/js/tacal.js" rel="script"></script>
     <script>
+
+        // helper function for formatting dates
         function formatDate(y, m, d) {
             var month = ((m < 10) ? '0' + m : m);
             var date = ((d < 10) ? '0' + d : d);
 
             return y + '-' + month + '-' + date;
         }
-        this.today = new Date();
-        /* Events for passing */
-        this.events = {
-            0: {
-                title: 'Pass Post',
-                date: formatDate(this.today.getFullYear(), this.today.getMonth(), this.today.getDate()),
-                wordcount: 364,
-                is_wordsalad: 0
-            },
-            1: {
-                title: 'Pass failed',
-                date: formatDate(this.today.getFullYear(), this.today.getMonth(), this.today.getDate() + 1),
-                wordcount: 407,
-                is_wordsalad: 1
-            }
-        };
 
+        // helper function to get random dates
+        function getRandomDate(rangeOfDays){
+            var today = new Date(Date.now());
+            return new Date(today.getYear()+1900, today.getMonth(), today.getDate()+Math.random() * rangeOfDays)
+        }
+
+        // helper function to return a random int
+        function getRandomInt(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+
+        this.today = new Date();
+
+        /* Events for passing */
+        this.events = [];
+
+
+        // Creates random events to display data
+        var numEvents = getRandomInt(30, 50);
+        var rDate = null;
+        var eventTemp = null;
+        for(var i = 0; i < numEvents; i++){
+
+            // gets a random date
+            rDate = getRandomDate(30);
+
+            // fills event with random information
+            eventTemp = {
+                title: 'Post '  + i,
+                date: formatDate(rDate.getFullYear(), rDate.getMonth(), rDate.getDate()),
+                wordcount: getRandomInt(300, 500),
+                is_wordsalad: getRandomInt(0,1)
+            };
+
+            this.events[i] = eventTemp;
+
+
+        }
+
+
+        // Setting options for cal1
         this.options = {
             id: 'cal1',
             event: this.events
         };
 
-        this.optionsTwo = {
-            id: 'cal2',
-            event: this.events
-        };
-
+        // Displaying cal1
         var cal = new TACAL(this.options);
         cal.fullMonth();
 
-        var cal2 = new TACAL(this.optionsTwo);
-        cal2.linearMonth(2016, 2, 2016, 6);
+        // Setting options for cal2
+        this.options.id = 'cal2';
+
+        // Displaying cal2
+        var cal2 = new TACAL(this.options);
+        cal2.linearMonth();
+
+        // Setting options for cal3
+        this.options.id = 'cal3';
+
+        // Display cal3
+        var cal3 = new TACAL(this.options);
+        cal3.linearMonth(new Date(2016, 2), new Date(2016, 4));
+
+
+
+        // Creates random events to display data (Increasing the the number of events
+        numEvents = getRandomInt(100, 250);
+        rDate = null;
+        eventTemp = null;
+        this.events = [];
+        for(var i = 0; i < numEvents; i++){
+
+            // gets a random date
+            rDate = getRandomDate(365);
+
+            // fills event with random information
+            eventTemp = {
+                title: 'Post '  + i,
+                date: formatDate(rDate.getFullYear(), rDate.getMonth(), rDate.getDate()),
+                wordcount: getRandomInt(300, 500),
+                is_wordsalad: getRandomInt(0,1)
+            };
+
+            this.events[i] = eventTemp;
+
+        }
+
+        // Setting options for cal3
+        this.options.id = 'cal4';
+        this.options.event = this.events;
+
+        // Display cal3
+        var cal4 = new TACAL(this.options);
+        cal4.linearMonth(new Date(2016, 2), new Date(2017, 2));
     </script>
 </body>
 </html>

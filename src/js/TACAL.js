@@ -302,15 +302,32 @@ TACAL.prototype.showFullMonth = function () {
  * Displays the number of number of months in a linear view
  * @param numMonths
  */
-TACAL.prototype.linearMonth = function (begYear, begMonth, endYear, endMonth) {
+TACAL.prototype.linearMonth = function (begin, end) {
     var monthsCal = [];
     var count = 0;
+    var ms = {
+        month: null,
+        year: null,
+        calendar: null
+    };
 
-    if((begMonth != null && endMonth != null)){
-        for(var m = begMonth; m < endMonth; m++){
+    if(begin == null && end == null){
+
+        ms = {
+            month: this.currMonth,
+            year: this.currYear,
+            calendar: this.calendar
+        };
+        monthsCal[count]= ms;
+        this.showLinerMonth(monthsCal);
+        return;
+    }
+
+    if(begin.getFullYear() == end.getFullYear()){
+        for(var m = begin.getMonth(); m <= end.getMonth(); m++){
 
             this.currMonth = m;
-            this.currYear = begYear;
+            this.currYear = begin.getFullYear();
 
             // Gets then number of weeks in the new month
             this.currWeeks = this.getWeeksInMonth();
@@ -324,9 +341,9 @@ TACAL.prototype.linearMonth = function (begYear, begMonth, endYear, endMonth) {
             // Adds events to the calender
             this.addEvent();
 
-            var ms = {
+            ms = {
                 month: m,
-                year: begYear,
+                year: begin.getFullYear(),
                 calendar: this.calendar
             };
 
@@ -334,10 +351,55 @@ TACAL.prototype.linearMonth = function (begYear, begMonth, endYear, endMonth) {
             count++;
         }
         this.showLinerMonth(monthsCal);
-
-
-
     }
+    else if (begin.getFullYear() < end.getFullYear()){
+        var m = begin.getMonth();
+        var year = begin.getFullYear();
+        var exit = false;
+        do{
+            this.currMonth = m;
+            this.currYear = year;
+
+            // Gets then number of weeks in the new month
+            this.currWeeks = this.getWeeksInMonth();
+
+            // Initialize the new calender
+            this.calendar = this.init();
+
+            // Adds dates to the calender
+            this.addDate(this.currYear, this.currMonth);
+
+            // Adds events to the calender
+            this.addEvent();
+
+            // Add calendar to container
+            ms = {
+                month: m,
+                year: year,
+                calendar: this.calendar
+            };
+            
+            // places contain in array
+            monthsCal[count] = ms;
+            count++;
+            
+            if(m == 11){
+                m = 0;
+                year++;
+            }
+            else{
+                m++;
+            }
+
+            if(year == end.getFullYear() && m == end.getMonth()){
+                exit = true;
+            }
+            
+            
+        }while( exit == false );
+        this.showLinerMonth(monthsCal);
+    }
+
 
     console.log(monthsCal);
 
